@@ -1,0 +1,37 @@
+# This is where you can define the bootstrap admin menu.
+# Menus can only have 2 levels (root level and secondary level [for dropdown menu entries]).
+# You must supply a list of menu entries.
+# To do that, you can use this set of options
+# :label - the label that will be presented in the menu
+# :class - the css class to apply to the item
+# :url   - the url to be used on the item link.
+# :item  - one of 3 things: a String, an Array or a Symbol
+#          * String: must be a name of a model. The supplied model will be used to build
+#                    the link url, as well as the label if not supplied
+#          * Array:  This will indicate that the item is in fact a dropdown menu. In this case
+#                    :label MUST be supplied.
+#          * Symbol: currently only ":divider" is supported and produces a division between
+#                    dropdown elements. In this case, both :label and :url will be ignored
+#
+#
+# Examples:
+# * Simple menu item based on a known model
+# - :item: Document
+#
+# * Simple menu item based on a model with a custom label and a custom css class
+# - :item: Author
+#   :label: The guys who done things
+#   :class: really_bold
+#
+# * Simple menu item based on a model with a custom url
+# - :item: Search
+#   :url: "https://google.com"
+#
+# * Dropdown menu item with several options and a divider
+# - :label: "User Administration"
+#   :url: "#"
+#   :item:
+#   - :item:  Role
+#   - :item:  :divider
+#   - :item:  User
+#     :label: Dudes

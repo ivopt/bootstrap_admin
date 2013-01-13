@@ -1,0 +1,5 @@
+- model_instance = model_instance_for  controller
+
+- model_instance.class.accessible_attributes.each do |attribute|
+  - unless attribute.blank?
+    = show_field model_instance, real_attribute_name(attribute)

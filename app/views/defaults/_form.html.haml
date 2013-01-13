@@ -1,0 +1,9 @@
+- model_instance = model_instance_for(controller)
+= simple_form_for [:admin, model_instance] do |f|
+  = f.error_messages
+
+  = render "form_fields", :form => f
+
+  .actions
+    = yield :actions
+    = link_to  :Back, [:admin, collection_name_for(controller)], :class => 'btn'

@@ -1,0 +1,9 @@
+- form.object.class.accessible_attributes.each do |attribute|
+  - unless attribute.blank?
+    - if attribute.end_with? "_id", "_ids"
+      = form.association real_attribute_name(attribute)
+    - else
+      = form.input attribute.to_sym
+
+- content_for :actions do
+  = form.button :submit, :class => 'btn btn-primary'

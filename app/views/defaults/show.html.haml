@@ -1,0 +1,10 @@
+- model_instance  = model_instance_for  controller
+- collection_name = collection_name_for controller
+
+%h1= t :Showing, :elem => model_instance
+
+= render "show"
+
+.actions
+  = link_to :Edit, [:edit, :admin, model_instance], :class => 'btn'
+  = link_to :Back, [:admin, collection_name], :class => 'btn'
