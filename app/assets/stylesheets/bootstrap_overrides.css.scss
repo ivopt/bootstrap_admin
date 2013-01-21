@@ -1,0 +1,135 @@
+@import "backgrounds.scss";
+
+.nav_fillup{
+  clear:both;
+  margin-top:40px;
+}
+.container.content{
+}
+
+
+/*  Bootstrap overrides  */
+body { font-size: 13px; }
+
+h1 { font-size: 30px; }
+h2 { font-size: 24px; }
+h3 { font-size: 18px; line-height: 20px; }
+h4 { font-size: 14px; }
+h5 { font-size: 12px; }
+h6 { font-size: 10px; }
+h1.dotted, h2.dotted, h3.dotted, h4.dotted, h5.dotted, h6.dotted{
+  border-bottom:1px dotted silver;
+}
+
+label, input, button, select, textarea { font-size: 13px; }
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  font-size: 13px;
+}
+
+.actions{
+  border-top: 1px dotted silver;
+  padding: 20px 0;
+  margin-top: 10px;
+}
+
+.input-append input,
+.input-prepend input,
+.input-append select,
+.input-prepend select,
+.input-append .uneditable-input,
+.input-prepend .uneditable-input {
+  font-size: 13px;
+}
+
+.input-append .add-on,
+.input-prepend .add-on {
+  font-size: 13px;
+}
+
+.table td.actions{
+  text-align: right;
+}
+.btn { font-size: 13px; }
+.btn-group > .btn,
+.btn-group > .dropdown-menu {
+  font-size: 13px;
+}
+
+/*.navbar-inner {
+  background-color: #fafafa;
+  background-image: -moz-linear-gradient(top, #333, #222);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#222));
+  background-image: -webkit-linear-gradient(top, #333, #222);
+  background-image: -o-linear-gradient(top, #333, #222);
+  background-image: linear-gradient(to bottom, #333, #222);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ff333333', endColorstr='#ff222222', GradientType=0);
+}*/
+
+.navbar .brand {
+  /*color: white;*/
+  /*text-shadow: none;*/
+}
+.navbar .nav > li > a,
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+  /*color: white;*/
+  text-shadow: none;
+}
+.navbar .nav > li > a{
+  color: silver;
+}
+
+.pagination {
+  margin: 0;
+}
+
+.pagination ul > li > a,
+.pagination ul > li > span {
+  line-height: 28px;
+}
+
+.popover-title {
+  font-size: 13px;
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom{
+  z-index: 1;
+}
+
+// ------------------------------------------------------------------------------------
+.navbar-inner{
+  // @include background-gradient(#242424, #050505);
+  @include background-gradient(#333, #222);
+}
+.navbar{
+  .brand {
+    color: white;
+    text-shadow: 0 1px 0 #222;
+    &:hover{
+      text-shadow: 0 0 1px silver;
+    }
+  }
+  .nav > li > a{
+    &:focus, &:hover{
+      color:white;
+      text-shadow: 0 0 1px silver;
+    }
+  }
+}

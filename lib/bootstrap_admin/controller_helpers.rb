@@ -5,6 +5,7 @@ module BootstrapAdmin
       def bootstrap_admin config = {}
         @bootstrap_admin_config = BootstrapAdmin::ControllerConfig.new config
 
+        self.respond_to *@bootstrap_admin_config.responder_formats
         self.responder = BootstrapAdmin::Responder
         add_bootstrap_admin_viewpath                # setup bootstrap_admin viewpath
         helper "bootstrap_admin"                    # add bootstrap_admin helpers

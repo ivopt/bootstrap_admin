@@ -50,7 +50,11 @@ module BootstrapAdmin
           if instance_var
             instance_variable_set "@#{collection_name.singularize}", instance_var
           else
-            instance_variable_get "@#{collection_name.singularize}"
+            unless ivar = instance_variable_get("@#{collection_name.singularize}")
+              ivar = model_class.find params[:id]
+              instance_variable_set "@#{collection_name.singularize}", ivar
+            end
+            ivar
           end
         end
         # -----------------------------------------------------------------------------
@@ -58,7 +62,11 @@ module BootstrapAdmin
           if collection_var
             instance_variable_set "@#{collection_name}", collection_var
           else
-            instance_variable_get "@#{collection_name}"
+            unless cvar = instance_variable_get("@#{collection_name}")
+              cvar = model_class.scoped
+              instance_variable_set "@#{collection_name}", cvar
+            end
+            cvar
           end
         end
         # -----------------------------------------------------------------------------

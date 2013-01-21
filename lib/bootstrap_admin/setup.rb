@@ -1,17 +1,18 @@
-module BootstrapAdmin
-  class Setup
-    # -----------------------------------------------------------------------------
-    DEFAULTS = {
-      # TODO: fill in some defaults...
-    }
-    # -----------------------------------------------------------------------------
-    # TODO: create some mattrs
-    # -----------------------------------------------------------------------------
-    def initialize options = {}
-      options      = DEFAULTS.merge options
+require 'active_support/dependencies'
 
-      # TODO: perform some initializations...
-    end
-    # -----------------------------------------------------------------------------
+module BootstrapAdmin
+  # -----------------------------------------------------------------------------
+  mattr_accessor :admin_namespace
+  @@admin_namespace = :admin
+  # -----------------------------------------------------------------------------
+  # mattr_accessor :admin_root_url
+  # @@admin_root_url = nil
+  # -----------------------------------------------------------------------------
+  mattr_accessor :admin_root_options
+  @@admin_root_options = {:only => :show}
+  # -----------------------------------------------------------------------------
+  def self.setup
+    yield self
   end
+  # -----------------------------------------------------------------------------
 end

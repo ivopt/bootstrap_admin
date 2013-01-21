@@ -7,6 +7,7 @@ require 'bootstrap_admin/version'
 require 'bootstrap_admin/responder'
 require 'bootstrap_admin/controller_config'
 require 'bootstrap_admin/controller_helpers'
+require 'bootstrap_admin/routes'
 # -----------------------------------------------------------------------------
 
 module BootstrapAdmin

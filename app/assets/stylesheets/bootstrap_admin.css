@@ -1,0 +1,10 @@
+/*
+ *= require bootstrap
+ *= require bootstrap_overrides
+ *= require jquery-ui-1.9.2.custom
+ *= require_self
+ */
+form.search{
+  float:right;
+  margin-top: -45px;
+}
