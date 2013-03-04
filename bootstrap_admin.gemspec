@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.version       = BootstrapAdmin::VERSION
   gem.authors       = ["Ivo Jesus"]
   gem.email         = ["ivo.jesus@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
+  gem.description   = %q{Create beatifull admin sections}
   gem.summary       = %q{Small lib to produce standard admin sections for web apps.}
   gem.homepage      = ""
 
@@ -18,4 +18,5 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency(%q<rails>, [">= 3.1.0"])
+  gem.add_runtime_dependency(%q<simple_form>, [">= 2.0.0"])
 end

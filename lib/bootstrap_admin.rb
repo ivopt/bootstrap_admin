@@ -9,6 +9,8 @@ require 'bootstrap_admin/controller_config'
 require 'bootstrap_admin/controller_helpers'
 require 'bootstrap_admin/routes'
 # -----------------------------------------------------------------------------
+require File.expand_path("../../config/initializers/simple_form.rb", __FILE__)
+# -----------------------------------------------------------------------------
 
 module BootstrapAdmin
   # Your code goes here...

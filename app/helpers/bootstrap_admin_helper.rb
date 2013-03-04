@@ -1,4 +1,31 @@
 module BootstrapAdminHelper
+  # -----------------------------------------------------------------------------
+  def show_field(item, field, &block)
+    content_tag :p do
+      content_tag(:b) do
+        item.class.human_attribute_name(field) + ": "
+      end +
+      if block_given?
+        capture(&block)
+      else
+        val = item.send(field)
+        if val.class.name =~ /(TrueClass|FalseClass)/
+          content_tag(:span, :class => "checkbox #{val.to_s}") do
+            content_tag(:span, :class=>"icon"){""}
+          end
+        elsif val.is_a? Array
+          content_tag :ul do
+            val.map do |uniq_val|
+              content_tag(:li, uniq_val.to_s)
+            end.join.html_safe
+          end
+        else
+          val.to_s
+        end
+      end
+    end.html_safe
+  end
+  # -----------------------------------------------------------------------------
   def model_for(controller)
     collection_name_for(controller).classify.constantize
   end
