@@ -1,0 +1,13 @@
+!!!
+%html
+  %head
+    %title= t :app_name
+    = stylesheet_link_tag "admin", :media => "all"
+    = csrf_meta_tags
+  %body
+    = render "admin/shared/navigation"
+    = render "admin/shared/flash_area"
+
+    .container.content= yield
+
+    = javascript_include_tag "admin"

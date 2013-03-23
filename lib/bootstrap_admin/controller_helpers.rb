@@ -10,6 +10,7 @@ module BootstrapAdmin
         add_bootstrap_admin_viewpath                # setup bootstrap_admin viewpath
         helper "bootstrap_admin"                    # add bootstrap_admin helpers
         helper "bootstrap_admin/paginator"          # add bootstrap_admin helpers
+        layout "bootstrap_admin"
         self.send :include, BootstrapAdmin::Actions # add bootstrap_admin actions
         helper_method :bootstrap_admin_config
       end
