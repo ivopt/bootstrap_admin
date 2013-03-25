@@ -19,4 +19,5 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency(%q<rails>, [">= 3.1.0"])
   gem.add_runtime_dependency(%q<simple_form>, [">= 2.0.0"])
+  gem.add_runtime_dependency(%q<coffee-rails>)
 end

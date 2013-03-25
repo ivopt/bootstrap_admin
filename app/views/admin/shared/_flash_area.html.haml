@@ -1,0 +1,6 @@
+#flash-area
+  - flash.each do |key, message|
+    .alert{:class => "alert-#{key}"}
+      = link_to (raw '&times;'), '#', :class => 'close'
+      = flash[key]
+.clear_both

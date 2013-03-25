@@ -1,7 +1,8 @@
 # -----------------------------------------------------------------------------
 require 'rails'
 # -----------------------------------------------------------------------------
-require 'bootstrap_admin/setup'
+require 'active_support/dependencies'
+# -----------------------------------------------------------------------------
 require 'bootstrap_admin/actions'
 require 'bootstrap_admin/version'
 require 'bootstrap_admin/responder'
@@ -18,9 +19,19 @@ module BootstrapAdmin
     config.autoload_paths << File.expand_path("../../app/helpers", __FILE__)
   end
   # =============================================================================
-  mattr_accessor :menu_items
+  mattr_accessor :admin_namespace
+  @@admin_namespace = :admin
   # -----------------------------------------------------------------------------
-  def setup
+  # mattr_accessor :admin_root_url
+  # @@admin_root_url = nil
+  # -----------------------------------------------------------------------------
+  mattr_accessor :admin_root_options
+  @@admin_root_options = {:only => :show}
+  # -----------------------------------------------------------------------------
+  mattr_accessor :paginator_page_size
+  @@paginator_page_size = 10
+  # -----------------------------------------------------------------------------
+  def self.setup
     yield self
   end
   # -----------------------------------------------------------------------------
