@@ -40,7 +40,7 @@ module BootstrapAdmin
     # -----------------------------------------------------------------------------
     def paginate resource
       current_page = (controller.params[:page] || 1).to_i
-      per_page     = (controller.params[:pp]   || PAGINATOR_PAGE_SIZE).to_i
+      per_page     = (controller.params[:pp]   || BootstrapAdmin.paginator_page_size).to_i
       count        = resource_count(resource)
       pages        = (count.to_f/per_page).ceil
       paginator = {
