@@ -7,11 +7,18 @@ module BootstrapAdmin
 
         self.respond_to *@bootstrap_admin_config.responder_formats
         self.responder = BootstrapAdmin::Responder
-        add_bootstrap_admin_viewpath                # setup bootstrap_admin viewpath
-        helper "bootstrap_admin"                    # add bootstrap_admin helpers
-        helper "bootstrap_admin/paginator"          # add bootstrap_admin helpers
+        # setup bootstrap_admin viewpath
+        add_bootstrap_admin_viewpath                
+
+        # add bootstrap_admin helpers
+        helper "bootstrap_admin"                    
+        helper "bootstrap_admin/paginator"
+        helper "bootstrap_admin/menu"
+        
         layout "bootstrap_admin"
-        self.send :include, BootstrapAdmin::Actions # add bootstrap_admin actions
+
+        # add bootstrap_admin actions
+        self.send :include, BootstrapAdmin::Actions 
         helper_method :bootstrap_admin_config
       end
       # ---------------------------------------------------------------------------
