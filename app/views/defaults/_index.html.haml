@@ -10,7 +10,7 @@
             %th= model_klass.human_attribute_name attribute.chomp("_id")
           - else
             %th= model_klass.human_attribute_name attribute
-      %th= t("Actions")
+      %th= t(:Actions)
 
   %tbody
     - collection.each do |item|
@@ -22,6 +22,6 @@
             - else
               %td= item.send attribute
         %td.actions
-          = link_to :Show, [:admin, item], :class => 'btn'
-          = link_to :Edit, [:edit, :admin, item], :class => 'btn'
-          = link_to :Destroy, [:admin, item], :confirm => t(:confirm), :method => :delete, :class => 'btn btn-danger' if can? :destroy, model_klass
+          = link_to :Show, [BootstrapAdmin.admin_namespace, item], :class => 'btn'
+          = link_to :Edit, [:edit, BootstrapAdmin.admin_namespace, item], :class => 'btn'
+          = link_to :Destroy, [BootstrapAdmin.admin_namespace, item], :confirm => t(:Confirm), :method => :delete, :class => 'btn btn-danger' if can? :destroy, model_klass
