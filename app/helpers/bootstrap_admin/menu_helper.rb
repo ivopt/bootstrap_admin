@@ -71,7 +71,7 @@ module BootstrapAdmin::MenuHelper
         model_symbol = row[:item].demodulize.underscore.pluralize.to_sym
 
         label     = row[:label] || model_class.model_name.human.pluralize
-        url       = row[:url  ] || [:admin, model_symbol]
+        url       = row[:url  ] || [BootstrapAdmin.admin_namespace, model_symbol]
         css_class = row[:class]
       end
 
