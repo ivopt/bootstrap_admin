@@ -1,0 +1,24 @@
+Description:
+    Copies bootstrap_admin's initializer, menu config file to your application.
+    Generates javascript and css structure needed to use and enhance bootstrap_admin's assets.
+
+Example:
+    1) rails g bootstrap_admin:install
+
+       This will:
+         1) Create config/initializers/bootstrap_admin.rb with bootstrap_admin's configurations
+         2) Create config/bootstrap_admin_menu.yml with bootstrap_admin's menu configurations
+         3) Creates manifest files with directives to use bootstrap_admin's assets
+            and complement them with host app's assets
+            - admin.js
+            - admin.css
+
+    2) rails g bootstrap_admin:install --namespace=MyAdmin
+
+       This will:
+         1) Create config/initializers/bootstrap_admin.rb with bootstrap_admin's configurations
+         2) Create config/bootstrap_admin_menu.yml with bootstrap_admin's menu configurations
+         3) Creates manifest files with directives to use bootstrap_admin's assets
+            and complement them with host app's assets
+            - my_admin.js
+            - my_admin.css
