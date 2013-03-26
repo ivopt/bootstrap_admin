@@ -6,5 +6,5 @@
 = render "show"
 
 .actions
-  = link_to :Edit, [:edit, :admin, model_instance], :class => 'btn'
-  = link_to :Back, [:admin, collection_name], :class => 'btn'
+  = link_to :Edit, [:edit, BootstrapAdmin.admin_namespace, model_instance], :class => 'btn'
+  = link_to :Back, [BootstrapAdmin.admin_namespace, collection_name], :class => 'btn'
