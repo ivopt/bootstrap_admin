@@ -65,6 +65,7 @@ module BootstrapAdmin::MenuHelper
         label     = row[:label]
         url       = row[:url  ] || "#"
         css_class = row[:class] || "dropdown-toggle"
+        data_attr = { :toggle => "dropdown" }
 
       else #then its a resource link.
         model_class  = row[:item].classify.constantize
@@ -73,9 +74,10 @@ module BootstrapAdmin::MenuHelper
         label     = row[:label] || model_class.model_name.human.pluralize
         url       = row[:url  ] || [BootstrapAdmin.admin_namespace, model_symbol]
         css_class = row[:class]
+        data_attr = {}
       end
 
-      link_to label, url, :class => css_class
+      link_to label, url, :class => css_class, :data => data_attr
     end
   # -----------------------------------------------------------------------------
 end

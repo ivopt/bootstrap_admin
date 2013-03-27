@@ -4,8 +4,7 @@
     %title= t :app_name
     = stylesheet_link_tag BootstrapAdmin.admin_namespace, :media => "all"
     = csrf_meta_tags
-    = yield :stylesheets
-    = yield :javascript_top
+    = yield :head
   %body
     = render "admin/shared/navigation"
     = render "admin/shared/flash_area"
@@ -13,4 +12,5 @@
     .container.content= yield
 
     = javascript_include_tag BootstrapAdmin.admin_namespace
-    = yield :javascript_bottom
+    = yield :bottom
+
