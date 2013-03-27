@@ -24,4 +24,4 @@
         %td.actions
           = link_to :Show, [BootstrapAdmin.admin_namespace, item], :class => 'btn'
           = link_to :Edit, [:edit, BootstrapAdmin.admin_namespace, item], :class => 'btn'
-          = link_to :Destroy, [BootstrapAdmin.admin_namespace, item], :confirm => t(:Confirm), :method => :delete, :class => 'btn btn-danger' if can? :destroy, model_klass
+          = link_to :Destroy, [BootstrapAdmin.admin_namespace, item], :confirm => t(:Confirm), :method => :delete, :class => 'btn btn-danger'
