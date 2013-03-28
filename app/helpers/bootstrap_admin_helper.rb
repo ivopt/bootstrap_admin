@@ -95,10 +95,10 @@ module BootstrapAdminHelper
   #-------------------------------------------------------------------------------
   def attributes
     return @attributes if @attributes
-
     model_klass = model_for controller
     bootstrap_admin_config_field = bootstrap_admin_config.send("#{params[:action]}_fields")
-    attributes = if "index" == params[:action] && bootstrap_admin_config_field
+
+    attributes = if bootstrap_admin_config_field.present?
       bootstrap_admin_config_field
     else
       model_klass.accessible_attributes.

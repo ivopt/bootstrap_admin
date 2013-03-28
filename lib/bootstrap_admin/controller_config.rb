@@ -10,8 +10,10 @@ module BootstrapAdmin
     attr_accessor :index_fields
     attr_accessor :show_fields
     attr_accessor :form_fields
-    alias_method :edit_fields, :form_fields
-    alias_method :new_fields, :form_fields
+    alias_method :edit_fields,   :form_fields
+    alias_method :new_fields,    :form_fields
+    alias_method :create_fields, :form_fields
+    alias_method :update_fields, :form_fields
     # -----------------------------------------------------------------------------
     def initialize options = {}
       options      = DEFAULTS.merge options
