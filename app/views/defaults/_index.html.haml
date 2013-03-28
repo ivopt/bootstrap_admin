@@ -1,26 +1,17 @@
-- model_klass = model_for controller
 - collection = collection_for controller
 
 %table.table.table-bordered.table-striped
   %thead
     %tr
-      - model_klass.accessible_attributes.each do |attribute|
-        - unless attribute.blank?
-          - if attribute.end_with? "_id"
-            %th= model_klass.human_attribute_name attribute.chomp("_id")
-          - else
-            %th= model_klass.human_attribute_name attribute
+      - attributes.each do |attribute|
+        %th= attribute.human_name
       %th= t(:Actions)
 
   %tbody
     - collection.each do |item|
       %tr
-        - model_klass.accessible_attributes.each do |attribute|
-          - unless attribute.blank?
-            - if attribute.end_with? "_id"
-              %td= item.send(attribute.chomp("_id")).to_s
-            - else
-              %td= item.send attribute
+        - attributes.each do |attribute|
+          %td= item.send attribute.name
         %td.actions
           = link_to :Show, [BootstrapAdmin.admin_namespace, item], :class => 'btn'
           = link_to :Edit, [:edit, BootstrapAdmin.admin_namespace, item], :class => 'btn'

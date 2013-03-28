@@ -2,23 +2,26 @@ module BootstrapAdmin
   module ControllerHelpers
     # =============================================================================
     module ClassMethods
-      def bootstrap_admin config = {}
-        @bootstrap_admin_config = BootstrapAdmin::ControllerConfig.new config
+      def bootstrap_admin &block
+        @bootstrap_admin_config = BootstrapAdmin::ControllerConfig.new # config
+        if block_given?
+          block.call @bootstrap_admin_config
+        end
 
         self.respond_to *@bootstrap_admin_config.responder_formats
         self.responder = BootstrapAdmin::Responder
         # setup bootstrap_admin viewpath
-        add_bootstrap_admin_viewpath                
+        add_bootstrap_admin_viewpath
 
         # add bootstrap_admin helpers
-        helper "bootstrap_admin"                    
+        helper "bootstrap_admin"
         helper "bootstrap_admin/paginator"
         helper "bootstrap_admin/menu"
-        
+
         layout "bootstrap_admin"
 
         # add bootstrap_admin actions
-        self.send :include, BootstrapAdmin::Actions 
+        self.send :include, BootstrapAdmin::Actions
         helper_method :bootstrap_admin_config
       end
       # ---------------------------------------------------------------------------
