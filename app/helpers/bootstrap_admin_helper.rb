@@ -1,4 +1,39 @@
 module BootstrapAdminHelper
+  #-------------------------------------------------------------------------------
+  # This re-implementation of link_to simply looks at the link label and if it
+  # falls under certain conditions, then it tries to create a label and/or url
+  # accordingly. Else works normally
+  # Ex: Assuming locale is set to PT
+  #  link_to :Show, @document 
+  #    # <a href='/documents/1'>Ver</a>
+  #  link_to Document
+  #    # <a href='/documents'>Documentos</a>
+  #  link_to [:edit, @document]
+  #    # <a href='/document/1/edit'>Editar Documento</a>
+  def link_to(*args, &block)
+    super(*args, &block) if block_given?
+
+    # When args[0] is a symbol, then just translate the symbol...
+    if args[0].is_a? Symbol
+      super(t(args[0]), *args[1..-1])
+
+    # when arg[0] is a ActiveRecord class...
+    elsif args[0].is_a?(Class) and args[0] < ActiveRecord::Base
+      label = args[0].model_name.human.pluralize
+      if args.length == 1
+        controller_name = args[0].name.underscore.pluralize
+        super(label, url_for(controller: controller_name, action: "index"))
+      else
+        super(label, *args[1..-1])
+      end
+
+    elsif args[0].is_a?(Array) && args[0][0].is_a?(Symbol) && args[0][1] < ActiveRecord::Base
+      link_content = t("helpers.submit.#{args[0][0]}", :model => args[0][1].model_name.human)
+      super(link_content, *args[1..-1])
+    else
+      super(*args)
+    end
+  end
   # -----------------------------------------------------------------------------
   def show_field item, field, &block
     content_tag :p do
