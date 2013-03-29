@@ -1,24 +1,33 @@
 module BootstrapAdmin
+  # Defines each controllers specific configuration
   class ControllerConfig
-    # -----------------------------------------------------------------------------
     DEFAULTS = {
       :responder_formats => [:html, :json]
     }
-    # -----------------------------------------------------------------------------
+
+    # controller's namespace
     attr_accessor :namespace
+
+    # Responded formats
     attr_accessor :responder_formats
+
+    # Fields to be used on the index action
     attr_accessor :index_fields
+
+    # Fields to be used on the show action
     attr_accessor :show_fields
+
+    # Fields to be used on form (edit/new/create/update) actions
     attr_accessor :form_fields
     alias_method :edit_fields,   :form_fields
     alias_method :new_fields,    :form_fields
     alias_method :create_fields, :form_fields
     alias_method :update_fields, :form_fields
-    # -----------------------------------------------------------------------------
+    # =============================================================================
     def initialize options = {}
       options      = DEFAULTS.merge options
 
-      # responder namespace
+      # namespace
       @namespace = options[:namespace] || BootstrapAdmin.admin_namespace
 
       # responder responder_formats
@@ -30,7 +39,6 @@ module BootstrapAdmin
       # fields to be shown @ show
       # @show_fields = options[:show_fields]
     end
-    # -----------------------------------------------------------------------------
-    # -----------------------------------------------------------------------------
+    # =============================================================================
   end
 end

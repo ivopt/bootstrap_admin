@@ -2,17 +2,32 @@ module BootstrapAdmin
 
   # BootstrapAdmin::Attribute represents a model attribute and stores
   # its name, human_name and a computed "type" which can be one of:
-  #  * :association
-  #  * :attribute
-  #  * :none
+  #  :association
+  #  :attribute
+  #  :none
   # (take a look at active_record_extensions)
-  # This is used to build UI elements (see: app/views/defaults/_[show|form|index])
+  # This is used to build UI elements, see:
+  #   app/views/defaults/show
+  #   app/views/defaults/form
+  #   app/views/defaults/index
 
-  Attribute = Struct.new :name, :human_name, :type
-  Attribute.class_eval do
-    def to_s; name; end
+  class Attribute
+    attr_reader :name, :human_name, :type
+
+    def initialize name, human_name, type
+      @name, @human_name, @type = name, human_name, type
+    end
+
+    # @return [String] the attribute name
+    def to_s; name.to_s; end
+
+    # @return [Symbol] the attributes name, but as a Symbol
     def to_sym; to_s.to_sym; end
+
+    # @return [true, false] true if type is :association, false otherwise
     def association?; :association == type; end
+
+    # @return [true, false] true if type is :attribute, false otherwise
     def attribute?; :attribute == type; end
   end
 end

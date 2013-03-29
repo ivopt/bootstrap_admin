@@ -15,24 +15,30 @@ require 'bootstrap_admin/routes'
 require File.expand_path("../../config/initializers/simple_form.rb", __FILE__)
 # -----------------------------------------------------------------------------
 
+# Bootstrap admin eases the tedious task of building admin interfaces
 module BootstrapAdmin
-  # Your code goes here...
   class BootstrapAdminEngine < Rails::Engine
     config.autoload_paths << File.expand_path("../../app/helpers", __FILE__)
   end
   # =============================================================================
+  # Defines the namespace where all the "bootstrap_admin" magic happens
   mattr_accessor :admin_namespace
   @@admin_namespace = :admin
   # -----------------------------------------------------------------------------
   # mattr_accessor :admin_root_url
   # @@admin_root_url = nil
   # -----------------------------------------------------------------------------
+  # Defines the route options for the "admin root"
   mattr_accessor :admin_root_options
   @@admin_root_options = {:only => :show}
   # -----------------------------------------------------------------------------
+  # Defines de number of items per page
   mattr_accessor :paginator_page_size
   @@paginator_page_size = 10
   # -----------------------------------------------------------------------------
+  # Setup BootstrapAdmin
+  # Run rails generate bootstrap_admin:install
+  # to create a fresh initializer with all configuration values.
   def self.setup
     yield self
   end

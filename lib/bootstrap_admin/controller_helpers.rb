@@ -2,6 +2,7 @@ module BootstrapAdmin
   module ControllerHelpers
     # =============================================================================
     module ClassMethods
+      # Controller Macro to define and configure bootstrap_admin
       def bootstrap_admin &block
         @bootstrap_admin_config = BootstrapAdmin::ControllerConfig.new # config
         if block_given?
@@ -33,12 +34,14 @@ module BootstrapAdmin
               bootstrap_admin_viewpath, ":action{.:locale,}{.:formats,}{.:handlers,}")
         end
         # -------------------------------------------------------------------------
-    end
-    # =============================================================================
+    end # module ClassMethods
+
+    # This is a helper method, so it provides access to the config made on the controller on the views
     def bootstrap_admin_config
       self.class.instance_variable_get "@bootstrap_admin_config"
     end
-    # -----------------------------------------------------------------------------
+
+    # Eases the access to config properties
     def method_missing method, *args
       if bootstrap_admin_config.respond_to? method
         bootstrap_admin_config.send method, *args
@@ -46,13 +49,13 @@ module BootstrapAdmin
         super method, *args
       end
     end
-    # -----------------------------------------------------------------------------
+
     def respond_to? method, include_private = false
       true if bootstrap_admin_config.respond_to? method
       super method, include_private
     end
-    # -----------------------------------------------------------------------------
 
+    # -----------------------------------------------------------------------------
     def self.included base
       base.extend ClassMethods
     end
