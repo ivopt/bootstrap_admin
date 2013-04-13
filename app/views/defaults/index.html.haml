@@ -1,7 +1,7 @@
 - model_klass = model_for(controller)
 - model_name  = model_name_for(controller)
 
-%h1= t :Listing, :elem => model_klass.model_name.human.pluralize
+%h1= t :listing, :elem => model_klass.model_name.human.pluralize
 
 = render_searchbox
 = render "index"

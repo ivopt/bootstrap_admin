@@ -1,10 +1,10 @@
 - model_instance  = model_instance_for  controller
 - collection_name = collection_name_for controller
 
-%h1= t :Showing, :elem => model_instance
+%h1= t :showing, :elem => model_instance
 
 = render "show"
 
 .actions
-  = link_to :Edit, [:edit, BootstrapAdmin.admin_namespace, model_instance], :class => 'btn'
-  = link_to :Back, [BootstrapAdmin.admin_namespace, collection_name], :class => 'btn'
+  = link_to :edit, [:edit, BootstrapAdmin.admin_namespace, model_instance], :class => 'btn'
+  = link_to :back, [BootstrapAdmin.admin_namespace, collection_name], :class => 'btn'

@@ -22,9 +22,9 @@ module BootstrapAdmin::PaginatorHelper
 
     content_tag(:li, :class=>css_class) do
       if "#" == url
-        content_tag(:span, "&larr; #{t(:Previous)}".html_safe)
+        content_tag(:span, "&larr; #{t(:previous)}".html_safe)
       else
-        link_to "&larr; #{t(:Previous)}".html_safe, url
+        link_to "&larr; #{t(:previous)}".html_safe, url
       end
     end.html_safe
   end
@@ -41,9 +41,9 @@ module BootstrapAdmin::PaginatorHelper
 
     content_tag(:li, :class=>css_class) do
       if "#" == url
-        content_tag(:span, "#{t(:Next)} &rarr;".html_safe)
+        content_tag(:span, "#{t(:next)} &rarr;".html_safe)
       else
-        link_to "#{t(:Next)} &rarr;".html_safe, url
+        link_to "#{t(:next)} &rarr;".html_safe, url
       end
     end.html_safe
   end

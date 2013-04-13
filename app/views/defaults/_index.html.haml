@@ -5,7 +5,7 @@
     %tr
       - attributes.each do |attribute|
         %th= attribute.human_name
-      %th= t(:Actions)
+      %th= t(:actions)
 
   %tbody
     - collection.each do |item|
@@ -13,6 +13,6 @@
         - attributes.each do |attribute|
           %td= item.send attribute.name
         %td.actions
-          = link_to :Show, [BootstrapAdmin.admin_namespace, item], :class => 'btn'
-          = link_to :Edit, [:edit, BootstrapAdmin.admin_namespace, item], :class => 'btn'
-          = link_to :Destroy, [BootstrapAdmin.admin_namespace, item], :confirm => t(:Confirm), :method => :delete, :class => 'btn btn-danger'
+          = link_to :show, [BootstrapAdmin.admin_namespace, item], :class => 'btn'
+          = link_to :edit, [:edit, BootstrapAdmin.admin_namespace, item], :class => 'btn'
+          = link_to :destroy, [BootstrapAdmin.admin_namespace, item], :confirm => t(:confirm), :method => :delete, :class => 'btn btn-danger'
