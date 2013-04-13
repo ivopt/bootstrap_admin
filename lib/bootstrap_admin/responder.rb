@@ -70,13 +70,16 @@ module BootstrapAdmin
       # =============================================================================
       def process_search resource
         result = resource
-        if controller.params[:q] and !resource.searchable_columns.blank?
-          conditions = resource.searchable_columns.map do |column|
-            if column.is_a? Symbol or column.is_a? String
-              "#{resource.table_name}.#{column} like ?"
+        fields = search_fields resource
 
-            elsif column.is_a? Hash
-              process_search_hash(resource, column)
+        if controller.params[:q] and !fields.blank?
+          conditions = fields.map do |field|
+            if field.is_a? Symbol or field.is_a? String
+              "#{resource.table_name}.#{field} like ?"
+
+            elsif field.is_a? Hash
+              resource, sconds = process_search_hash(resource, field)
+              sconds
             end
           end.flatten.compact
 
@@ -88,13 +91,29 @@ module BootstrapAdmin
       end
 
       # =============================================================================
+      def search_fields resource
+        if controller.searchable_fields.blank?
+          accessible  = resource.accessible_attributes.reject &:blank?
+          text_fields = resource.columns.
+                                 select{|c| [:string, :text].include? c.type}.
+                                 map(&:name)
+          text_fields & accessible
+        else
+          controller.searchable_fields
+        end
+      end
+
+      # =============================================================================
       def process_search_hash resource, hash
-        hash.keys.map do |key|
+        conditions = hash.keys.map do |key|
           assoc = resource.reflect_on_association(key)
           if assoc.options[:polymorphic]
             next
           else
-            resource.includes key
+            resource = resource.joins <<-SQL
+              LEFT JOIN #{assoc.table_name}
+                on (#{resource.table_name}.#{assoc.foreign_key} = #{assoc.klass.table_name}.#{assoc.klass.primary_key})
+            SQL
             if hash[key].is_a? Symbol or hash[key].is_a? String
               "#{assoc.table_name}.#{hash[key]} like ?"
 
@@ -107,6 +126,7 @@ module BootstrapAdmin
             end
           end
         end
+        return resource, conditions
       end
 
       # =============================================================================

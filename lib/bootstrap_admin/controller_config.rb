@@ -23,6 +23,10 @@ module BootstrapAdmin
     alias_method :new_fields,    :form_fields
     alias_method :create_fields, :form_fields
     alias_method :update_fields, :form_fields
+
+    # Searchable fields
+    attr_accessor :searchable_fields
+
     # =============================================================================
     def initialize options = {}
       options      = DEFAULTS.merge options
