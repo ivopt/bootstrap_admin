@@ -5,7 +5,8 @@ module BootstrapAdmin
   #  :association
   #  :attribute
   #  :none
-  # (take a look at active_record_extensions)
+  # (take a look at active_record_extensions).
+  #
   # This is used to build UI elements, see:
   #   app/views/defaults/show
   #   app/views/defaults/form
@@ -18,10 +19,10 @@ module BootstrapAdmin
       @name, @human_name, @type = name, human_name, type
     end
 
-    # @return [String] the attribute name
+    # @return [String] the attribute's name
     def to_s; name.to_s; end
 
-    # @return [Symbol] the attributes name, but as a Symbol
+    # @return [Symbol] the attribute's name, but as a Symbol
     def to_sym; to_s.to_sym; end
 
     # @return [true, false] true if type is :association, false otherwise

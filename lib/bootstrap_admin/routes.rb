@@ -1,6 +1,13 @@
 module ActionDispatch::Routing
   class Mapper
-    # -----------------------------------------------------------------------------
+    # =============================================================================
+    # Defines the routes to the bootstrap_admin controllers of your app and also
+    # defines a "admin root" route based on the bootstrap_admin namespace
+    #
+    # == Parameters
+    # +options+:: regular route options for the "admin root"
+    # +block+:: A block configuring namespaced routes, just like a regular
+    #           namespace route block
     def bootstrap_admin options = {}, &block
       admin_namespace = options.delete(:namespace) || BootstrapAdmin.admin_namespace
       BootstrapAdmin.admin_namespace = admin_namespace
@@ -16,6 +23,6 @@ module ActionDispatch::Routing
         end
       end
     end # bootstrap_admin
-    # -----------------------------------------------------------------------------
-  end
-end
+
+  end # class Mapper
+end # module ActionDispatch::Routing

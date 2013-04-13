@@ -1,15 +1,24 @@
 module BootstrapAdminHelper
-  #-------------------------------------------------------------------------------
+  # =============================================================================
   # This re-implementation of link_to simply looks at the link label and if it
   # falls under certain conditions, then it tries to create a label and/or url
   # accordingly. Else works normally
-  # Ex: Assuming locale is set to PT
-  #  link_to :Show, @document 
+  #
+  # @param *args Same as the original link_to
+  # @param &block Same as the original link_to
+  #
+  # @return [String] link markup
+  #
+  # @example Assuming locale is set to PT
+  #  link_to :Show, @document
   #    # <a href='/documents/1'>Ver</a>
+  #
   #  link_to Document
   #    # <a href='/documents'>Documentos</a>
+  #
   #  link_to [:edit, @document]
   #    # <a href='/document/1/edit'>Editar Documento</a>
+  #
   def link_to(*args, &block)
     super(*args, &block) if block_given?
 
@@ -34,7 +43,37 @@ module BootstrapAdminHelper
       super(*args)
     end
   end
-  # -----------------------------------------------------------------------------
+
+  # =============================================================================
+  # Builds the markup to properly show a field, including label and field value.
+  #
+  # If a block is given, then it uses the block as the field "value"
+  # else it looks at what the field value is and if it is:
+  #   * a boolean, builds a fake checkbox
+  #   * an array, builds a ul list with each element of the array
+  #   * else, just uses the string value
+  #
+  # @param item [ActiveRecord::Base] The item record
+  # @param field [Symbol or String] The field to show
+  # @param &block [Block] An optional block that yields markup
+  #
+  # @return [Markup] the necessary markup to show the field
+  #
+  # @example
+  #   show_field @document, :title
+  #     # <p><b>Title: </b>So Long, and Thanks For All the Fish</p>
+  #
+  #   show_field @document, :awesome?
+  #     # <p><b>Awesome: </b><span class='checkbox true'><span class='icon'></span></span></p>
+  #
+  #   show_field @document, :authors
+  #     # <p><b>Authors: </b><ul><li>Douglas Adams</li></ul></p>
+  #
+  #   show_field @document, :details do
+  #     "#{@document.title} - #{@document.year}"
+  #   end
+  #     # <p><b>Title: </b>So Long, and Thanks For All the Fish - 1984</p>
+  #
   def show_field item, field, &block
     content_tag :p do
       content_tag(:b) do
@@ -60,39 +99,50 @@ module BootstrapAdminHelper
       end
     end.html_safe
   end
-  # -----------------------------------------------------------------------------
-  # -----------------------------------------------------------------------------
+
+  # =============================================================================
+  # @param controller [ActionController::Base]
+  # @return [Class] the model class for the current controller
   def model_for controller
     collection_name_for(controller).classify.constantize
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
+  # @return [ActiveRecord::Base] the model instance based on the controller name
   def model_instance_for controller
     name = collection_name_for(controller).singularize
     instance_variable_get "@#{name}"
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
+  # @return [ActiveRecord::Base Array] the model instance collection for the current controller
   def collection_for controller
     name = collection_name_for controller
     instance_variable_get "@#{name}"
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
+  # @return [String] the model instance name for the current controller
   def model_name_for controller
     model_for(controller).model_name.underscore
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
+  # @return [String] the model instance collection name for the current controller
   def collection_name_for controller
     controller.class.name.sub("Controller", "").underscore.split('/').last
   end
-  #-------------------------------------------------------------------------------
-  #-------------------------------------------------------------------------------
-  def real_attribute_name attribute
-    if attribute.match /(.+)_(?:id)(s)?$/
-      "#{$1}#{$2}".to_sym
-    else
-      attribute.to_sym
-    end
-  end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
+  # Finds the model instance attributes to use for the current action.
+  #
+  # First it checks if the bootstrap_admin_config has fields configured for the
+  # current action. If so, it uses those, if not, it tries to guess which
+  # attributes to use through the model's "accessible_attributes"
+  #
+  # @return [BootstrapAdmin::Attribute Array] Attributes to be used on the current
+  #                                           action
+  #
   def attributes
     return @attributes if @attributes
     model_klass = model_for controller
@@ -107,12 +157,33 @@ module BootstrapAdminHelper
     end
 
     @attributes = attributes.map do |att|
-      BootstrapAdmin::Attribute.new(
-        att,
-        model_klass.human_attribute_name(att),
-        model_klass.type_of(att)
-      )
+      BootstrapAdmin::Attribute.new att,
+                                    model_klass.human_attribute_name(att),
+                                    model_klass.type_of(att)
     end
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
+  # def render_attribute name, type = :index
+  #   # content_tag :td do
+  #   # if respond_to? "#{attribute.name}_index"
+  #   #   %td= send "#{attribute.name}_index", item
+  #   # else
+  #   #   %td= item.send attribute.name
+  #   # end
+  # end
+
+  private
+    # =============================================================================
+    # Translates "*_id" attribute names to association names when needed
+    # @param attribute [String] The attribute to "translate"
+    # @return [String] The attribute name translated
+    def real_attribute_name attribute
+      if attribute.match /(.+)_(?:id)(s)?$/
+        "#{$1}#{$2}".to_sym
+      else
+        attribute.to_sym
+      end
+    end
+
 end

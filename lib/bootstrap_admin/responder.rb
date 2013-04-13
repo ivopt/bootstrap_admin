@@ -1,12 +1,17 @@
 module BootstrapAdmin
   class Responder < ActionController::Responder
-    # -----------------------------------------------------------------------------
+    # =============================================================================
+    # Responds to any format...
     def to_format
       render @format        => format_resource(@resource, @format),
              :status        => status_for_resource(@resource),
              :content_type  => content_type_for(@format)
     end
-    # -----------------------------------------------------------------------------
+
+    # =============================================================================
+    # Responds to HTML format
+    #
+    # It sets flash messages, handles search, sets pagination (@paginator)
     def to_html
       if get? && resource.is_a?(ActiveRecord::Relation)
         items = process_search resource
@@ -33,99 +38,100 @@ module BootstrapAdmin
         super
       end
     end
-    # -----------------------------------------------------------------------------
+
     private
-    # -----------------------------------------------------------------------------
-    # =============================================================================
-    # -----------------------------------------------------------------------------
-    def paginate resource
-      current_page = (controller.params[:page] || 1).to_i
-      per_page     = (controller.params[:pp]   || BootstrapAdmin.paginator_page_size).to_i
-      count        = resource_count(resource)
-      pages        = (count.to_f/per_page).ceil
-      paginator = {
-        :current_page => current_page,
-        :count        => count,
-        :pages        => pages > 0 ? pages : 1
-      }
-      items = resource.offset( (current_page-1)*per_page ).limit(per_page)
+      # =============================================================================
+      def paginate resource
+        current_page = (controller.params[:page] || 1).to_i
+        per_page     = (controller.params[:pp]   || BootstrapAdmin.paginator_page_size).to_i
+        count        = resource_count(resource)
+        pages        = (count.to_f/per_page).ceil
+        paginator = {
+          :current_page => current_page,
+          :count        => count,
+          :pages        => pages > 0 ? pages : 1
+        }
+        items = resource.offset( (current_page-1)*per_page ).limit(per_page)
 
-      return items, paginator
-    end
-    # -----------------------------------------------------------------------------
-    def resource_count resource
-      values = resource.includes_values
-      to_remove = resource.reflect_on_all_associations.select{|a| a.options[:polymorphic]}.map &:name
-      resource.includes_values -= to_remove
-      count = resource.count
-      resource.includes_values = values
-
-      return count
-    end
-    # -----------------------------------------------------------------------------
-    def process_search resource
-      result = resource
-      if controller.params[:q] and !resource.searchable_columns.blank?
-        conditions = resource.searchable_columns.map do |column|
-          if column.is_a? Symbol or column.is_a? String
-            "#{resource.table_name}.#{column} like ?"
-
-          elsif column.is_a? Hash
-            process_search_hash(resource, column)
-          end
-        end.flatten.compact
-
-        params = ["%#{controller.params[:q]}%"] * conditions.count
-        result = resource.where(conditions.join(" OR "), *params)
+        return items, paginator
       end
 
-      result
-    end
-    # -----------------------------------------------------------------------------
-    def process_search_hash resource, hash
-      hash.keys.map do |key|
-        assoc = resource.reflect_on_association(key)
-        if assoc.options[:polymorphic]
-          next
-        else
-          resource.includes key
-          if hash[key].is_a? Symbol or hash[key].is_a? String
-            "#{assoc.table_name}.#{hash[key]} like ?"
+      # =============================================================================
+      def resource_count resource
+        values = resource.includes_values
+        to_remove = resource.reflect_on_all_associations.select{|a| a.options[:polymorphic]}.map &:name
+        resource.includes_values -= to_remove
+        count = resource.count
+        resource.includes_values = values
 
-          elsif hash[key].is_a? Array
-            hash[key].map{|col| "#{assoc.table_name}.#{col} like ?" }
+        return count
+      end
 
-          elsif hash[key].is_a? Hash
-            process_search_hash(resource, hash[key])
+      # =============================================================================
+      def process_search resource
+        result = resource
+        if controller.params[:q] and !resource.searchable_columns.blank?
+          conditions = resource.searchable_columns.map do |column|
+            if column.is_a? Symbol or column.is_a? String
+              "#{resource.table_name}.#{column} like ?"
 
+            elsif column.is_a? Hash
+              process_search_hash(resource, column)
+            end
+          end.flatten.compact
+
+          params = ["%#{controller.params[:q]}%"] * conditions.count
+          result = resource.where(conditions.join(" OR "), *params)
+        end
+
+        result
+      end
+
+      # =============================================================================
+      def process_search_hash resource, hash
+        hash.keys.map do |key|
+          assoc = resource.reflect_on_association(key)
+          if assoc.options[:polymorphic]
+            next
+          else
+            resource.includes key
+            if hash[key].is_a? Symbol or hash[key].is_a? String
+              "#{assoc.table_name}.#{hash[key]} like ?"
+
+            elsif hash[key].is_a? Array
+              hash[key].map{|col| "#{assoc.table_name}.#{col} like ?" }
+
+            elsif hash[key].is_a? Hash
+              process_search_hash(resource, hash[key])
+
+            end
           end
         end
       end
-    end
-    # -----------------------------------------------------------------------------
-    # =============================================================================
-    # -----------------------------------------------------------------------------
-    def content_type_for format
-      "application/#{format}"
-    end
-    # -----------------------------------------------------------------------------
-    def format_resource resource, format
-      if resource.is_a?(ActiveRecord::Base) and not resource.valid?
-        resource.errors.send "to_#{format}"
-      else
-        resource.send "to_#{format}"
+
+      # =============================================================================
+      def content_type_for format
+        "application/#{format}"
       end
-    end
-    # -----------------------------------------------------------------------------
-    def status_for_resource(resource)
-      if resource.is_a?(ActiveRecord::Base) and not resource.valid?
-        403
-      else
-        200
+
+      # =============================================================================
+      def format_resource resource, format
+        if resource.is_a?(ActiveRecord::Base) and not resource.valid?
+          resource.errors.send "to_#{format}"
+        else
+          resource.send "to_#{format}"
+        end
       end
-    end
-    # -----------------------------------------------------------------------------
-    # =============================================================================
-    # -----------------------------------------------------------------------------
-  end
-end
+
+      # =============================================================================
+      def status_for_resource(resource)
+        if resource.is_a?(ActiveRecord::Base) and not resource.valid?
+          403
+        else
+          200
+        end
+      end
+
+  end # class Responder
+end # module BootstrapAdmin
+

@@ -1,13 +1,16 @@
 module BootstrapAdmin::PaginatorHelper
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
   def render_paginator(paginator)
     render "paginator", :paginator => paginator
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
   def render_searchbox
     render "search_box"
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
   def paginator_previous(paginator)
     if paginator[:current_page] == 1
       url       = "#"
@@ -25,7 +28,8 @@ module BootstrapAdmin::PaginatorHelper
       end
     end.html_safe
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
   def paginator_next(paginator)
     if paginator[:current_page] == paginator[:pages]
       url       = "#"
@@ -43,7 +47,8 @@ module BootstrapAdmin::PaginatorHelper
       end
     end.html_safe
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
   def paginator_pages(paginator)
     if paginator[:pages] <= 5
       [
@@ -74,8 +79,8 @@ module BootstrapAdmin::PaginatorHelper
       ]
     end.join.html_safe
   end
-  #-------------------------------------------------------------------------------
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
   def paginator_range(current_page, range)
     contents = range.map do |page|
       content_tag(:li, :class => (page==current_page ? "active" : "")) do
@@ -89,7 +94,8 @@ module BootstrapAdmin::PaginatorHelper
 
     contents.join.html_safe
   end
-  #-------------------------------------------------------------------------------
+
+  # =============================================================================
   def paginator_page(num, css_class = nil)
     if num.to_i > 0
       url = url_for(params.merge :page => num)
@@ -105,5 +111,5 @@ module BootstrapAdmin::PaginatorHelper
       end
     end.html_safe
   end
-  #-------------------------------------------------------------------------------
-end
+
+end # module BootstrapAdmin::PaginatorHelper

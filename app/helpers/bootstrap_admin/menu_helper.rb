@@ -1,7 +1,10 @@
 module BootstrapAdmin::MenuHelper
-  # -----------------------------------------------------------------------------
+
   BOOTSTRAP_ADMIN_MENU_FILE = "config/bootstrap_admin_menu.yml"
-  # -----------------------------------------------------------------------------
+
+  # =============================================================================
+  # Builds the bootstrap_admin menu markup
+  # @return [Markup] bootstrap_admin menu
   def bootstrap_admin_menu
     content_tag :ul, :class=>"nav" do
       bootstrap_admin_menu_items.map do |row|
@@ -15,15 +18,15 @@ module BootstrapAdmin::MenuHelper
       end.join.html_safe
     end
   end
-  # -----------------------------------------------------------------------------
+
   private
-    # -----------------------------------------------------------------------------
-    # -----------------------------------------------------------------------------
+    # =============================================================================
     def load_bootstrap_admin_menu_items
       @bootstrap_admin_menu_items = YAML.load_file(BOOTSTRAP_ADMIN_MENU_FILE)
       @bootstrap_admin_menu_load_timestamp = Time.now
     end
-    # -----------------------------------------------------------------------------
+
+    # =============================================================================
     def bootstrap_admin_menu_items
       if @bootstrap_admin_menu_load_timestamp.nil? or
          File.mtime(BOOTSTRAP_ADMIN_MENU_FILE) > @bootstrap_admin_menu_load_timestamp
@@ -31,8 +34,8 @@ module BootstrapAdmin::MenuHelper
       end
       @bootstrap_admin_menu_items
     end
-    # -----------------------------------------------------------------------------
-    # -----------------------------------------------------------------------------
+
+    # =============================================================================
     def bootstrap_admin_menu_item(row)
       if can? :read, row[:item].classify.constantize
         content_tag(:li) do bootstrap_admin_menu_link(row) end
@@ -40,7 +43,8 @@ module BootstrapAdmin::MenuHelper
         "".html_safe
       end
     end
-    # -----------------------------------------------------------------------------
+
+    # =============================================================================
     def bootstrap_admin_menu_dropdown(row)
       content_tag(:li, :class=>"dropdown", :"data-dropdown"=>"dropdown") do
         bootstrap_admin_menu_link(row) +
@@ -55,11 +59,13 @@ module BootstrapAdmin::MenuHelper
         end
       end
     end
-    # -----------------------------------------------------------------------------
+
+    # =============================================================================
     def bootstrap_admin_menu_separator(row)
       content_tag(:li, :class => row[:item]){""}
     end
-    # -----------------------------------------------------------------------------
+
+    # =============================================================================
     def bootstrap_admin_menu_link(row)
       if row[:item].is_a? Array #then its a dropdown menu
         label     = row[:label]
@@ -79,5 +85,5 @@ module BootstrapAdmin::MenuHelper
 
       link_to label, url, :class => css_class, :data => data_attr
     end
-  # -----------------------------------------------------------------------------
+
 end
