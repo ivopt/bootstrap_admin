@@ -28,7 +28,7 @@ module BootstrapAdmin
       # =============================================================================
       # Creates a new item
       def create
-        instance model_class.create(params[model_name])
+        instance model_class.new(params[model_name])
         instance.save
         namespaced_response instance
       end
