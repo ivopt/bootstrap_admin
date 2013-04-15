@@ -5,8 +5,7 @@
     %tr
       - attributes.each do |attribute|
         %th= attribute.human_name
-      %th= t(:actions)
-
+      %th.actions= t(:actions)
   %tbody
     - collection.each do |item|
       %tr
