@@ -45,7 +45,7 @@ module BootstrapAdminHelper
   end
 
   # =============================================================================
-  # Builds the markup to properly show a field, including label and field value.
+  # Builds the markup to properly display a field, including label and field value.
   #
   # If a block is given, then it uses the block as the field "value"
   # else it looks at what the field value is and if it is:
@@ -54,27 +54,27 @@ module BootstrapAdminHelper
   #   * else, just uses the string value
   #
   # @param item [ActiveRecord::Base] The item record
-  # @param field [Symbol or String] The field to show
+  # @param field [Symbol or String] The field to display
   # @param &block [Block] An optional block that yields markup
   #
-  # @return [Markup] the necessary markup to show the field
+  # @return [Markup] the necessary markup to display the field
   #
   # @example
-  #   show_field @document, :title
+  #   display_field @document, :title
   #     # <p><b>Title: </b>So Long, and Thanks For All the Fish</p>
   #
-  #   show_field @document, :awesome?
+  #   display_field @document, :awesome?
   #     # <p><b>Awesome: </b><span class='checkbox true'><span class='icon'></span></span></p>
   #
-  #   show_field @document, :authors
+  #   display_field @document, :authors
   #     # <p><b>Authors: </b><ul><li>Douglas Adams</li></ul></p>
   #
-  #   show_field @document, :details do
+  #   display_field @document, :details do
   #     "#{@document.title} - #{@document.year}"
   #   end
   #     # <p><b>Title: </b>So Long, and Thanks For All the Fish - 1984</p>
   #
-  def show_field item, field, &block
+  def display_field item, field, &block
     content_tag :p do
       content_tag(:b) do
         item.class.human_attribute_name(field) + ": "
@@ -82,7 +82,7 @@ module BootstrapAdminHelper
       if block_given?
         capture(&block)
       else
-        val = item.send(field)
+        val = display_field_value item, field
         if val.class.name =~ /(TrueClass|FalseClass)/
           content_tag(:span, :class => "checkbox #{val.to_s}") do
             content_tag(:span, :class=>"icon"){""}
@@ -98,6 +98,17 @@ module BootstrapAdminHelper
         end
       end
     end.html_safe
+  end
+
+  # =============================================================================
+  def display_field_value item, field
+    if self.respond_to? "#{params[:action]}_#{field}"
+      send "#{params[:action]}_#{field}", item
+    elsif self.respond_to? "#{field}"
+      send "#{field}", item
+    else
+      item.send field
+    end
   end
 
   # =============================================================================

@@ -11,7 +11,7 @@
     - collection.each do |item|
       %tr
         - attributes.each do |attribute|
-          %td= item.send attribute.name
+          %td= display_field_value item, attribute.to_s
         %td.actions
           = link_to :show, [BootstrapAdmin.admin_namespace, item], :class => 'btn'
           = link_to :edit, [:edit, BootstrapAdmin.admin_namespace, item], :class => 'btn'
