@@ -35,6 +35,17 @@ module BootstrapAdmin
         end
       end
 
+      def create_admin_controller
+        create_file "app/controllers/#{namespace_parsed}_controller.rb" do
+          <<-RUBY.strip_heredoc
+            class #{options.namespace.classify}Controller < ApplicationController
+              layout "bootstrap_admin"
+              helper "bootstrap_admin/menu"
+            end
+          RUBY
+        end
+      end
+
       private
 
       def namespace_parsed
