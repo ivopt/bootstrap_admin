@@ -16,13 +16,31 @@ module BootstrapAdmin::MenuHelper
           bootstrap_admin_menu_item row
         end
       end.join.html_safe
-    end
+    end # content_tag
   end
 
   private
     # =============================================================================
+    def build_bootstrap_admin_menu_from_controller_names
+      namespace = BootstrapAdmin.admin_namespace
+      Dir["./app/controllers/#{namespace}/**/*.rb"].each do |controller|
+        require controller
+      end
+
+      yml_menu = AdminController.descendants.map do |controller|
+        ename = controller.name.demodulize.gsub("Controller","").singularize
+        "- :item: #{ename}"
+      end.join("\n")
+
+      @bootstrap_admin_menu_items = YAML.load(yml_menu)
+    end
+
+    # =============================================================================
     def load_bootstrap_admin_menu_items
       @bootstrap_admin_menu_items = YAML.load_file(BOOTSTRAP_ADMIN_MENU_FILE)
+      unless @bootstrap_admin_menu_items
+        build_bootstrap_admin_menu_from_controller_names
+      end
       @bootstrap_admin_menu_load_timestamp = Time.now
     end
 
@@ -36,16 +54,18 @@ module BootstrapAdmin::MenuHelper
     end
 
     # =============================================================================
-    def bootstrap_admin_menu_item(row)
-      if can? :read, row[:item].classify.constantize
-        content_tag(:li) do bootstrap_admin_menu_link(row) end
-      else
+    def bootstrap_admin_menu_item row
+      if respond_to?(:cannot?) && cannot?(:read, row[:item].classify.constantize)
         "".html_safe
+      else
+        content_tag(:li) do
+          bootstrap_admin_menu_link row
+        end
       end
     end
 
     # =============================================================================
-    def bootstrap_admin_menu_dropdown(row)
+    def bootstrap_admin_menu_dropdown row
       content_tag(:li, :class=>"dropdown", :"data-dropdown"=>"dropdown") do
         bootstrap_admin_menu_link(row) +
         content_tag(:ul, :class=>"dropdown-menu") do
@@ -61,12 +81,12 @@ module BootstrapAdmin::MenuHelper
     end
 
     # =============================================================================
-    def bootstrap_admin_menu_separator(row)
+    def bootstrap_admin_menu_separator row
       content_tag(:li, :class => row[:item]){""}
     end
 
     # =============================================================================
-    def bootstrap_admin_menu_link(row)
+    def bootstrap_admin_menu_link row
       if row[:item].is_a? Array #then its a dropdown menu
         label     = row[:label]
         url       = row[:url  ] || "#"
