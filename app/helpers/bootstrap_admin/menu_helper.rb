@@ -88,7 +88,11 @@ module BootstrapAdmin::MenuHelper
     # =============================================================================
     def bootstrap_admin_menu_link row
       if row[:item].is_a? Array #then its a dropdown menu
-        label     = row[:label]
+        label = if row[:label].is_a? Symbol
+                  t row[:label]
+                else
+                  row[:label]
+                end
         url       = row[:url  ] || "#"
         css_class = row[:class] || "dropdown-toggle"
         data_attr = { :toggle => "dropdown" }
@@ -97,7 +101,11 @@ module BootstrapAdmin::MenuHelper
         model_class  = row[:item].classify.constantize
         model_symbol = row[:item].demodulize.underscore.pluralize.to_sym
 
-        label     = row[:label] || model_class.model_name.human.pluralize
+        label = if row[:label].is_a? Symbol
+                  t row[:label]
+                else
+                  row[:label] || model_class.model_name.human.pluralize
+                end
         url       = row[:url  ] || [BootstrapAdmin.admin_namespace, model_symbol]
         css_class = row[:class]
         data_attr = {}

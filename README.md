@@ -103,10 +103,12 @@ If you want to customize the bootstrap_admin menu, you can edit the `config/boot
 So, to customize the menu, you must supply a list of menu entries.<br/>
 On each entry you can use this set of options:
 
-* `:label` - the label that will be presented in the menu
+* `:label` - the label that will be presented in the menu. This can be either:
+  * **Symbol** - Will be passed to I18n for translation
+  * **String** - Will be used directly
 * `:class` - the css class to apply to the item
 * `:url`   - the url to be used on the item link.
-* `:item`  - one of 3 things: a **String**, a **List** or a **Symbol**
+* `:item`  - one of 3 things:
   * **String**: must be a name of a model (it will be used to build the link url and the label if not supplied)
   * **List**: This will tell bootstrap_admin that the item is in fact a dropdown menu. **In this case `:label` must be supplied.**
   * **Symbol**: currently only `:divider` is supported and produces a division between dropdown elements.
@@ -126,7 +128,7 @@ On each entry you can use this set of options:
       :url: "https://google.com"
 
     # Dropdown menu item with several options and a divider
-    - :label: "User Administration"
+    - :label: :user_admin # this will be called as I18n.t(:user_admin)
       :url: "#"
       :item:
       - :item:  Role
