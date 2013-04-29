@@ -1,8 +1,5 @@
 - attributes.each do |attribute|
-  - if attribute.association?
-    = form.association attribute.name
-  - else
-    = form.input attribute.name
+  = render_form_field form, attribute
 
 - content_for :actions do
   = form.button :submit, :class => 'btn btn-primary'

@@ -82,7 +82,7 @@ module BootstrapAdminHelper
       if block_given?
         capture(&block)
       else
-        val = display_field_value item, field
+        val = render_field item, field
         if val.class.name =~ /(TrueClass|FalseClass)/
           content_tag(:span, :class => "checkbox #{val.to_s}") do
             content_tag(:span, :class=>"icon"){""}
@@ -101,15 +101,29 @@ module BootstrapAdminHelper
   end
 
   # =============================================================================
-  def display_field_value item, field
-    if self.respond_to? "#{params[:action]}_#{field}"
-      send "#{params[:action]}_#{field}", item
-    elsif self.respond_to? "#{field}"
-      send "#{field}", item
+  def render_field item, field
+    if self.respond_to?(helper = "#{params[:action]}_#{field}") ||
+       self.respond_to?(helper = "#{field}")
+      send helper, item
     else
       item.send field
     end
   end
+
+  # =============================================================================
+  def render_form_field form, field
+    if self.respond_to?(helper = "#{params[:action]}_form_#{field.name}") ||
+       self.respond_to?(helper = "form_#{field.name}")
+      send helper, form
+
+    elsif field.association?
+      form.association field.name
+
+    else
+      form.input field.name
+    end
+  end
+
 
   # =============================================================================
   # @param controller [ActionController::Base]
