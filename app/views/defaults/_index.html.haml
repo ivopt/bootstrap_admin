@@ -1,6 +1,6 @@
 - collection = collection_for controller
 
-%table.table.table-bordered.table-striped
+%table.table{:class => BootstrapAdmin.ui_styles[:index]}
   %thead
     %tr
       - attributes.each do |attribute|

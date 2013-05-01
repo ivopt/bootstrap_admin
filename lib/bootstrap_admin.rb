@@ -38,6 +38,12 @@ module BootstrapAdmin
   mattr_accessor :paginator_page_size
   @@paginator_page_size = 10
   # -----------------------------------------------------------------------------
+  #
+  mattr_accessor :ui_styles
+  @@ui_styles = {
+    index: %w(table-bordered table-striped)
+  }
+  # -----------------------------------------------------------------------------
   # Setup BootstrapAdmin
   # Run rails generate bootstrap_admin:install
   # to create a fresh initializer with all configuration values.
