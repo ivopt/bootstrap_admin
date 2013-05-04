@@ -27,6 +27,9 @@ module BootstrapAdmin
     # Searchable fields
     attr_accessor :searchable_fields
 
+    # Available Actions
+    attr_accessor :available_actions
+
     # =============================================================================
     def initialize options = {}
       options      = DEFAULTS.merge options
@@ -42,6 +45,8 @@ module BootstrapAdmin
 
       # fields to be shown @ show
       # @show_fields = options[:show_fields]
+
+      @available_actions = [:new, :show, :edit, :destroy]
     end
     # =============================================================================
   end

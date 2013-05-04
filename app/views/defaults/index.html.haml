@@ -6,7 +6,9 @@
 = render_searchbox
 = render "index"
 = render_paginator @paginator
+
 .clear_both
 
 .actions
-  = link_to [:new, model_klass], [:new, BootstrapAdmin.admin_namespace, model_name], :class => 'btn btn-primary'
+  - if available_actions.include? :new
+    = link_to [:new, model_klass], [:new, BootstrapAdmin.admin_namespace, model_name], :class => 'btn btn-primary'

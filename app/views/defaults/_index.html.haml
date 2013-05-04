@@ -12,7 +12,6 @@
       %tr
         - attributes.each do |attribute|
           %td= render_field item, attribute.to_s
+
         %td.actions
-          = link_to :show, [BootstrapAdmin.admin_namespace, item], :class => 'btn'
-          = link_to :edit, [:edit, BootstrapAdmin.admin_namespace, item], :class => 'btn'
-          = link_to :destroy, [BootstrapAdmin.admin_namespace, item], :confirm => t(:confirm), :method => :delete, :class => 'btn btn-danger'
+          = index_actions_for item

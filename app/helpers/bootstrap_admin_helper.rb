@@ -124,6 +124,30 @@ module BootstrapAdminHelper
     end
   end
 
+  # =============================================================================
+  def available_actions
+    bootstrap_admin_config.available_actions
+  end
+
+  # =============================================================================
+  def index_actions_for item
+    actions = []
+
+    if available_actions.include? :show
+      actions << link_to(:show, [BootstrapAdmin.admin_namespace, item], class: 'btn')
+    end
+
+    if available_actions.include? :edit
+      actions << link_to(:edit, [:edit, BootstrapAdmin.admin_namespace, item], class: 'btn')
+    end
+
+    if available_actions.include? :destroy
+      actions << link_to(:destroy, [BootstrapAdmin.admin_namespace, item], confirm: t(:confirm), method: :delete, class: 'btn btn-danger')
+    end
+
+    actions.join("\n").html_safe
+  end
+
 
   # =============================================================================
   # @param controller [ActionController::Base]
