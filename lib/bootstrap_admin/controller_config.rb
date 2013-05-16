@@ -34,6 +34,9 @@ module BootstrapAdmin
     # Available Actions
     attr_accessor :available_actions
 
+    # Name of the model to be used on this controller (to support namespaced models)
+    attr_accessor :model_name
+
     # =============================================================================
     def initialize options = {}
       options      = DEFAULTS.merge options
