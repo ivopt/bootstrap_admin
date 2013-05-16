@@ -55,7 +55,11 @@ module BootstrapAdmin
         # =============================================================================
         # @return [String] model name based on the controller's name
         def model_name
-          collection_name.singularize
+          if bootstrap_admin_config.model_name.blank?
+            collection_name.singularize
+          else
+            bootstrap_admin_config.model_name
+          end
         end
 
         # =============================================================================
