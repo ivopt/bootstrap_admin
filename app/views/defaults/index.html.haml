@@ -10,5 +10,4 @@
 .clear_both
 
 .actions
-  - if available_actions.include? :new
-    = link_to [:new, model_klass], [:new, BootstrapAdmin.admin_namespace, model_name], :class => 'btn btn-primary'
+  = index_default_actions

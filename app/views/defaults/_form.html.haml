@@ -1,9 +1,9 @@
 - model_instance = model_instance_for(controller)
-= simple_form_for [BootstrapAdmin.admin_namespace, model_instance] do |f|
+= simple_form_for *bootstrap_form_url(model_instance) do |f|
   = f.error_notification
 
   = render "form_fields", :form => f
 
   .actions
     = yield :actions
-    = link_to :back, [BootstrapAdmin.admin_namespace, collection_name_for(controller)], :class => 'btn'
+    = link_to :back, bootstrap_url, :class => 'btn'

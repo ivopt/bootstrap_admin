@@ -1,4 +1,4 @@
-= form_tag url_for(:controller => params[:controller]), :method => :get, :class=>"search bootstrap_admin" do
+= form_tag bootstrap_url, :method => :get, :class=>"search bootstrap_admin" do
   .input-append{:class => params[:q].blank? ? "" : "input-prepend"}
     - unless params[:q].blank?
       .add-on.prepend.btn.reset= image_tag "cross.gif"

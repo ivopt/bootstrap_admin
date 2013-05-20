@@ -58,14 +58,18 @@ module BootstrapAdmin
           if bootstrap_admin_config.model_name.blank?
             collection_name.singularize
           else
-            bootstrap_admin_config.model_name
+            bootstrap_admin_config.model_name.underscore.gsub("/","_")
           end
         end
 
         # =============================================================================
         # @return [ActiveRecord::Base] model class based on the controller's name
         def model_class
-          model_name.classify.constantize
+          if bootstrap_admin_config.model_name.blank?
+            collection_name.singularize.classify.constantize
+          else
+            bootstrap_admin_config.model_name.constantize
+          end
         end
 
         # =============================================================================
@@ -75,7 +79,11 @@ module BootstrapAdmin
             instance_variable_set "@#{collection_name.singularize}", instance_var
           else
             unless ivar = instance_variable_get("@#{collection_name.singularize}")
-              ivar = model_class.find params[:id]
+              ivar = if ["new", "create"].include? params[:action]
+                model_class.new
+              else
+                model_class.find params[:id]
+              end
               instance_variable_set "@#{collection_name.singularize}", ivar
             end
             ivar

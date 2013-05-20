@@ -6,6 +6,4 @@
 = render "show"
 
 .actions
-  - if available_actions.include? :edit
-    = link_to :edit, [:edit, BootstrapAdmin.admin_namespace, model_instance], :class => 'btn'
-  = link_to :back, [BootstrapAdmin.admin_namespace, collection_name], :class => 'btn'
+  = show_default_actions

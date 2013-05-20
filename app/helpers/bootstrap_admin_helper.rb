@@ -129,23 +129,51 @@ module BootstrapAdminHelper
     bootstrap_admin_config.available_actions
   end
 
+
+  def bootstrap_url_for options = {}
+    defaults = {:controller => params[:controller]}.merge options
+    url_for(defaults)
+  end
+  alias_method :bootstrap_url, :bootstrap_url_for
+
+  def bootstrap_form_url item
+    [item, :url => bootstrap_url_for(:action => (item.new_record? ? :create : :update), :id => item.id)]
+  end
+
   # =============================================================================
   def index_actions_for item
     actions = []
 
     if available_actions.include? :show
-      actions << link_to(:show, [BootstrapAdmin.admin_namespace, item], class: 'btn')
+      actions << link_to(:show, bootstrap_url_for(:action => :show, :id => item.id), class: 'btn')
     end
 
     if available_actions.include? :edit
-      actions << link_to(:edit, [:edit, BootstrapAdmin.admin_namespace, item], class: 'btn')
+      actions << link_to(:edit, bootstrap_url_for(:action => :edit, :id => item.id), class: 'btn')
     end
 
     if available_actions.include? :destroy
-      actions << link_to(:destroy, [BootstrapAdmin.admin_namespace, item], confirm: t(:confirm), method: :delete, class: 'btn btn-danger')
+      actions << link_to(:destroy, bootstrap_url_for(:action => :show, :id => item.id), confirm: t(:confirm), method: :delete, class: 'btn btn-danger')
     end
 
     actions.join("\n").html_safe
+  end
+
+  # =====
+  def index_default_actions 
+    if available_actions.include? :new
+      model_klass = model_for controller
+      link_to([:new, model_klass], bootstrap_url_for(:action => :new), :class => 'btn btn-primary').html_safe
+    end
+  end
+
+  def show_default_actions
+    model_instance = model_instance_for controller
+    str = if available_actions.include? :edit
+      link_to :edit, bootstrap_url_for(:action => :edit, :id => model_instance.id), :class => 'btn'
+    end || ""
+    str += link_to :back, bootstrap_url, :class => 'btn'
+    str.html_safe
   end
 
 
@@ -153,7 +181,11 @@ module BootstrapAdminHelper
   # @param controller [ActionController::Base]
   # @return [Class] the model class for the current controller
   def model_for controller
-    collection_name_for(controller).classify.constantize
+    if bootstrap_admin_config.model_name.blank?
+      collection_name_for(controller).classify.constantize
+    else
+      bootstrap_admin_config.model_name.constantize
+    end
   end
 
   # =============================================================================

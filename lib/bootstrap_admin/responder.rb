@@ -29,7 +29,7 @@ module BootstrapAdmin
                     'helpers.messages.update.success'
                   end
         controller.flash[:success] = I18n.t(message, :model => resource.class.model_name.human)
-        redirect_to @resources
+        redirect_to :controller => controller.controller_name, :action => :show, :id => resource.id
 
       else
         if delete?
