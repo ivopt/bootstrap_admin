@@ -1,0 +1,37 @@
+en:
+  listing: "Listing %{elem}"
+  showing: "Showing %{elem}"
+  back: Back
+  new: New
+  update: Update
+  show: View
+  edit: Edit
+  destroy: Remove
+  previous: Previous
+  next: Next
+  actions: Actions
+  app_name: "!APP NAME!"
+  confirm: Are you sure?
+
+  placeholder:
+    search: Search...
+    date: Date...
+
+  helpers:
+    messages:
+      create:
+        success: "%{model} created successfully!"
+      update:
+        success: "%{model} updated successfully!"
+      destroy:
+        success: "%{model} removed successfully!"
+
+    select:
+      prompt: "Select an option"
+
+    submit:
+      new: 'New %{model}'
+      edit: 'Edit %{model}'
+      create: 'Create %{model}'
+      update: 'Update %{model}'
+      submit: 'Save %{model}'

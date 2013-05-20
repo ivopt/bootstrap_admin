@@ -13,6 +13,10 @@ module BootstrapAdmin
         copy_file "bootstrap_admin_menu.yml", "config/bootstrap_admin_menu.yml"
       end
 
+      def copy_locale_file
+        copy_file "en_bootstrap_admin.yml", "config/locales/en_bootstrap_admin.yml"
+      end
+
       def asset_configuration
         empty_directory "app/assets/javascripts/#{namespace_parsed}"
         create_file "app/assets/javascripts/#{namespace_parsed}.js" do
@@ -32,6 +36,24 @@ module BootstrapAdmin
              *= require_tree ./#{namespace_parsed}
              */
           CSS_INFO
+        end
+      end
+
+      def create_admin_controller
+        create_file "app/controllers/#{namespace_parsed}_controller.rb" do
+          <<-RUBY.strip_heredoc
+            class #{options.namespace.classify}Controller < ApplicationController
+              layout "bootstrap_admin"
+              helper "bootstrap_admin/menu"
+            end
+          RUBY
+        end
+
+        create_file "app/views/#{namespace_parsed}/show.html.haml" do
+          <<-HAML.strip_heredoc
+            %p Hello!
+            %p Find me @ app/views/#{namespace_parsed}/show.html.haml
+          HAML
         end
       end
 

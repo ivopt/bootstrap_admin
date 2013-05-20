@@ -1,6 +1,6 @@
 - collection = collection_for controller
 
-%table.table.table-bordered.table-striped
+%table.table{:class => BootstrapAdmin.ui_styles[:index]}
   %thead
     %tr
       - attributes.each do |attribute|
@@ -10,8 +10,7 @@
     - collection.each do |item|
       %tr
         - attributes.each do |attribute|
-          %td= item.send attribute.name
+          %td= render_field item, attribute.to_s
+
         %td.actions
-          = link_to :show, [BootstrapAdmin.admin_namespace, item], :class => 'btn'
-          = link_to :edit, [:edit, BootstrapAdmin.admin_namespace, item], :class => 'btn'
-          = link_to :destroy, [BootstrapAdmin.admin_namespace, item], :confirm => t(:confirm), :method => :delete, :class => 'btn btn-danger'
+          = index_actions_for item

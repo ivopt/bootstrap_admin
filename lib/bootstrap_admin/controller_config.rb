@@ -24,8 +24,18 @@ module BootstrapAdmin
     alias_method :create_fields, :form_fields
     alias_method :update_fields, :form_fields
 
+    # Fields to be used on ALL actions
+    # These are used when none of the {action}_fields are defined
+    attr_accessor :action_fields
+
     # Searchable fields
     attr_accessor :searchable_fields
+
+    # Available Actions
+    attr_accessor :available_actions
+
+    # Name of the model to be used on this controller (to support namespaced models)
+    attr_accessor :model_name
 
     # =============================================================================
     def initialize options = {}
@@ -42,6 +52,8 @@ module BootstrapAdmin
 
       # fields to be shown @ show
       # @show_fields = options[:show_fields]
+
+      @available_actions = [:new, :show, :edit, :destroy]
     end
     # =============================================================================
   end

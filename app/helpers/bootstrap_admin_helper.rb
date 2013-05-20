@@ -45,7 +45,7 @@ module BootstrapAdminHelper
   end
 
   # =============================================================================
-  # Builds the markup to properly show a field, including label and field value.
+  # Builds the markup to properly display a field, including label and field value.
   #
   # If a block is given, then it uses the block as the field "value"
   # else it looks at what the field value is and if it is:
@@ -54,27 +54,27 @@ module BootstrapAdminHelper
   #   * else, just uses the string value
   #
   # @param item [ActiveRecord::Base] The item record
-  # @param field [Symbol or String] The field to show
+  # @param field [Symbol or String] The field to display
   # @param &block [Block] An optional block that yields markup
   #
-  # @return [Markup] the necessary markup to show the field
+  # @return [Markup] the necessary markup to display the field
   #
   # @example
-  #   show_field @document, :title
+  #   display_field @document, :title
   #     # <p><b>Title: </b>So Long, and Thanks For All the Fish</p>
   #
-  #   show_field @document, :awesome?
+  #   display_field @document, :awesome?
   #     # <p><b>Awesome: </b><span class='checkbox true'><span class='icon'></span></span></p>
   #
-  #   show_field @document, :authors
+  #   display_field @document, :authors
   #     # <p><b>Authors: </b><ul><li>Douglas Adams</li></ul></p>
   #
-  #   show_field @document, :details do
+  #   display_field @document, :details do
   #     "#{@document.title} - #{@document.year}"
   #   end
   #     # <p><b>Title: </b>So Long, and Thanks For All the Fish - 1984</p>
   #
-  def show_field item, field, &block
+  def display_field item, field, &block
     content_tag :p do
       content_tag(:b) do
         item.class.human_attribute_name(field) + ": "
@@ -82,7 +82,7 @@ module BootstrapAdminHelper
       if block_given?
         capture(&block)
       else
-        val = item.send(field)
+        val = render_field item, field
         if val.class.name =~ /(TrueClass|FalseClass)/
           content_tag(:span, :class => "checkbox #{val.to_s}") do
             content_tag(:span, :class=>"icon"){""}
@@ -99,6 +99,55 @@ module BootstrapAdminHelper
       end
     end.html_safe
   end
+
+  # =============================================================================
+  def render_field item, field
+    if self.respond_to?(helper = "#{params[:action]}_#{field}") ||
+       self.respond_to?(helper = "#{field}")
+      send helper, item
+    else
+      item.send field
+    end
+  end
+
+  # =============================================================================
+  def render_form_field form, field
+    if self.respond_to?(helper = "#{params[:action]}_form_#{field.name}") ||
+       self.respond_to?(helper = "form_#{field.name}")
+      send helper, form
+
+    elsif field.association?
+      form.association field.name
+
+    else
+      form.input field.name
+    end
+  end
+
+  # =============================================================================
+  def available_actions
+    bootstrap_admin_config.available_actions
+  end
+
+  # =============================================================================
+  def index_actions_for item
+    actions = []
+
+    if available_actions.include? :show
+      actions << link_to(:show, [BootstrapAdmin.admin_namespace, item], class: 'btn')
+    end
+
+    if available_actions.include? :edit
+      actions << link_to(:edit, [:edit, BootstrapAdmin.admin_namespace, item], class: 'btn')
+    end
+
+    if available_actions.include? :destroy
+      actions << link_to(:destroy, [BootstrapAdmin.admin_namespace, item], confirm: t(:confirm), method: :delete, class: 'btn btn-danger')
+    end
+
+    actions.join("\n").html_safe
+  end
+
 
   # =============================================================================
   # @param controller [ActionController::Base]
@@ -146,17 +195,14 @@ module BootstrapAdminHelper
   def attributes
     return @attributes if @attributes
     model_klass = model_for controller
-    bootstrap_admin_config_field = bootstrap_admin_config.send("#{params[:action]}_fields")
 
-    attributes = if bootstrap_admin_config_field.present?
-      bootstrap_admin_config_field
-    else
-      model_klass.accessible_attributes.
-        reject(&:blank?).
-        map{|att| real_attribute_name att }
-    end
+    fields =  bootstrap_admin_config.send("#{params[:action]}_fields")  ||
+              bootstrap_admin_config.send("action_fields")              ||
+              model_klass.accessible_attributes.
+                reject(&:blank?).
+                map{|att| real_attribute_name att }
 
-    @attributes = attributes.map do |att|
+    @attributes = fields.map do |att|
       BootstrapAdmin::Attribute.new att,
                                     model_klass.human_attribute_name(att),
                                     model_klass.type_of(att)
