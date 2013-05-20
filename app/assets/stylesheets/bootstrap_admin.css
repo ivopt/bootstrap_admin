@@ -5,8 +5,29 @@
  *= require_self
  *= require_tree .
  */
+
 form.search{
   float:right;
   margin-top: -45px;
 }
+
 .clear_both{clear:both;}
+
+
+.checkbox .icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(/assets/jquery.checkbox.png) no-repeat blue;
+}
+
+.checkbox {
+  display: inline-block; }
+  .checkbox .icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(/assets/jquery.checkbox.png) no-repeat; }
+  .checkbox.checked .icon, .checkbox.true .icon {
+    background-position: -16px 0px; }
+
