@@ -55,7 +55,12 @@ module BootstrapAdmin::MenuHelper
 
     # =============================================================================
     def bootstrap_admin_menu_item row
-      if respond_to?(:cannot?) && cannot?(:read, row[:item].classify.constantize)
+      obj = if row[:namespace]
+              "#{row[:namespace]}::#{row[:item]}"
+            else
+              row[:item]
+            end
+      if respond_to?(:cannot?) && cannot?(:read, obj.classify.constantize)
         "".html_safe
       else
         content_tag(:li) do
