@@ -34,8 +34,10 @@ module BootstrapAdmin
       else
         if delete?
           controller.flash[:success] = I18n.t("helpers.messages.destroy.success", :model => resource.class.model_name.human)
+          redirect_to :controller => controller.controller_name
+        else
+          super
         end
-        super
       end
     end
 
