@@ -44,7 +44,9 @@ module BootstrapAdmin
           <<-RUBY.strip_heredoc
             class #{options.namespace.classify}Controller < ApplicationController
               layout "bootstrap_admin"
+              helper "bootstrap_admin"
               helper "bootstrap_admin/menu"
+              helper "bootstrap_admin/paginator"
             end
           RUBY
         end
