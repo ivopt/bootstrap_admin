@@ -132,12 +132,19 @@ module BootstrapAdminHelper
 
   def bootstrap_url_for options = {}
     defaults = {:controller => params[:controller]}.merge options
-    url_for(defaults)
+
+    ctrl_namespace = defaults[:controller].split("/").first
+    if instance_eval "defined? #{ctrl_namespace}"
+      instance_eval("#{ctrl_namespace}.method :url_for").call defaults
+    else
+      main_app.url_for(defaults)
+    end
   end
   alias_method :bootstrap_url, :bootstrap_url_for
 
   def bootstrap_form_url item
-    [item, :url => bootstrap_url_for(:action => (item.new_record? ? :create : :update), :id => item.id)]
+    item_name = item.class.name.underscore.gsub("/","_")
+    [item, :as => item_name, :url => bootstrap_url_for(:action => (item.new_record? ? :create : :update), :id => item.id)]
   end
 
   # =============================================================================
