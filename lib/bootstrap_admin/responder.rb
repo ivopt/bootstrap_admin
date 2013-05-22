@@ -22,6 +22,7 @@ module BootstrapAdmin
         if request.xhr?
           render controller.params[:action], layout: false
         end
+
       elsif resource.is_a?(ActiveRecord::Base) && (post? || put?) && resource.valid?
         message = if post?
                     'helpers.messages.create.success'
@@ -29,12 +30,12 @@ module BootstrapAdmin
                     'helpers.messages.update.success'
                   end
         controller.flash[:success] = I18n.t(message, :model => resource.class.model_name.human)
-        redirect_to :controller => controller.controller_name, :action => :show, :id => resource.id
+        redirect_to :action => :show, :id => resource.id
 
       else
         if delete?
           controller.flash[:success] = I18n.t("helpers.messages.destroy.success", :model => resource.class.model_name.human)
-          redirect_to :controller => controller.controller_name
+          redirect_to :action => :index
         else
           super
         end
