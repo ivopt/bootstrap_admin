@@ -134,6 +134,10 @@ module BootstrapAdminHelper
     defaults = {:controller => params[:controller]}.merge options
 
     ctrl_namespace = defaults[:controller].split("/").first
+    # Fix for engines with shared namespace for some reason main_app.url_for doesn't find the route without this "/" 
+    # It consider the route inside of engine instead of main app. 
+    defaults[:controller] = "/#{defaults[:controller]}"
+
     if instance_eval "defined? #{ctrl_namespace}"
       instance_eval("#{ctrl_namespace}.method :url_for").call defaults
     else
