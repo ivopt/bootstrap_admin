@@ -269,7 +269,8 @@ module BootstrapAdminHelper
     # @return [String] The attribute name translated
     def real_attribute_name attribute
       if attribute.match /(.+)_(?:id)(s)?$/
-        "#{$1}#{$2}".to_sym
+        ($2 ? $1.pluralize : $1).to_sym
+        # "#{$1}#{$2}".to_sym
       else
         attribute.to_sym
       end
