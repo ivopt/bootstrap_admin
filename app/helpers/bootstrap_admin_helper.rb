@@ -152,22 +152,60 @@ module BootstrapAdminHelper
   end
 
   # =============================================================================
-  def index_actions_for item
-    actions = []
+  # def index_actions_for item
+  #   actions = []
 
+  #   if available_actions.include? :show
+  #     actions << link_to( bootstrap_url_for(:action => :show, :id => item.id), class: 'btn btn-default', :alt=> t(:show), :title=>t(:show)) do
+  #       content_tag(:span, '',:class=>"glyphicon glyphicon-eye-open")
+  #     end
+  #   end
+
+  #   if available_actions.include? :edit
+  #     actions << link_to( bootstrap_url_for(:action => :edit, :id => item.id), class: 'btn btn-default', :alt=> t(:edit), :title=>t(:edit)) do 
+  #       content_tag(:span, '',:class=>"glyphicon glyphicon-edit")
+  #     end
+
+  #   end
+
+  #   if available_actions.include? :destroy
+  #     actions << link_to( bootstrap_url_for(:action => :show, :id => item.id), confirm: t(:confirm), method: :delete, class: 'btn btn-danger', :alt=> t(:destroy), :title=>t(:destroy)) do
+  #       content_tag(:span, '',:class=>"glyphicon glyphicon-trash")
+  #     end
+  #   end
+    
+  # end
+  
+  def show_link_action item
     if available_actions.include? :show
-      actions << link_to(:show, bootstrap_url_for(:action => :show, :id => item.id), class: 'btn')
+      link_to( bootstrap_url_for(:action => :show, :id => item.id), class: 'btn btn-default', :alt=> t(:show), :title=>t(:show)) do
+        content_tag(:span, '',:class=>"glyphicon glyphicon-eye-open")
+      end
     end
+  end
 
+  def edit_link_action item
     if available_actions.include? :edit
-      actions << link_to(:edit, bootstrap_url_for(:action => :edit, :id => item.id), class: 'btn')
+      link_to( bootstrap_url_for(:action => :edit, :id => item.id), class: 'btn btn-default', :alt=> t(:edit), :title=>t(:edit)) do 
+        content_tag(:span, '',:class=>"glyphicon glyphicon-edit")
+      end
     end
-
+  end
+  
+  def delete_link_action item
     if available_actions.include? :destroy
-      actions << link_to(:destroy, bootstrap_url_for(:action => :show, :id => item.id), confirm: t(:confirm), method: :delete, class: 'btn btn-danger')
+      link_to( bootstrap_url_for(:action => :show, :id => item.id), confirm: t(:confirm), method: :delete, class: 'btn btn-danger', :alt=> t(:destroy), :title=>t(:destroy)) do
+        content_tag(:span, '',:class=>"glyphicon glyphicon-trash")
+      end
     end
-
-    actions.join("\n").html_safe
+  end
+  
+  def index_actions_for item, actions=[:show, :edit, :delete]
+    html = []
+    actions.each do |action|
+      html << self.send("#{action}_link_action", item)
+    end
+    html.join("\n").html_safe
   end
 
   # =====
