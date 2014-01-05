@@ -1,0 +1,24 @@
+Description:
+  Allows you to override the default views for all bootstrap_admin actions, either globally or resource specific.
+  If you choose to override globally, then all views for all resources will be overridden.
+  If you choose to override for a specific resource, then your overrides will only affect that resources' views.
+
+Example:
+  $ rails g bootstrap_admin:override_views defaults
+    This will:
+      1) Create app/views/admin/defaults folder
+      2) Copy all of bootstrap_admin default views to that folder for you to tweak
+    From there on, all resources will use these views.
+
+  $ rails g bootstrap_admin:override_views defaults index new
+    This will:
+      1) Create app/views/admin/defaults folder
+      2) Copy all index and new related views to that folder for you to tweak
+    From there on, all resources will use these views to render index or new actions.
+
+  $ rails g bootstrap_admin:override_views books
+    This will:
+      1) Create app/views/admin/books folder (if it doesn't exist already)
+      2) Copy all of bootstrap_admin default views to that folder for you to tweak
+    From there on, only book resources will use these views.
+
