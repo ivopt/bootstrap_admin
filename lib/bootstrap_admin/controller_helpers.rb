@@ -39,9 +39,12 @@ module BootstrapAdmin
       private
         # =============================================================================
         def add_bootstrap_admin_viewpath
+          view_matcher_format = ":action{.:locale,}{.:formats,}{.:handlers,}"
+          bootstrap_admin_app_viewpath = "#{Rails.root}/app/views/#{BootstrapAdmin.admin_namespace}/defaults"
           bootstrap_admin_viewpath = File.expand_path("../../../app/views/defaults", __FILE__)
-          self.view_paths << ActionView::FileSystemResolver.new(
-              bootstrap_admin_viewpath, ":action{.:locale,}{.:formats,}{.:handlers,}")
+
+          self.view_paths << ActionView::FileSystemResolver.new(bootstrap_admin_app_viewpath, view_matcher_format)
+          self.view_paths << ActionView::FileSystemResolver.new(bootstrap_admin_viewpath, view_matcher_format)
         end
 
     end # module ClassMethods

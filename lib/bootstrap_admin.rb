@@ -22,6 +22,13 @@ module BootstrapAdmin
   class BootstrapAdminEngine < Rails::Engine
     config.autoload_paths << File.expand_path("../../app/helpers", __FILE__)
   end
+
+  # =============================================================================
+  # Returns the gem root dir
+  def self.root_dir
+    File.expand_path("../..", __FILE__)
+  end
+
   # =============================================================================
   # Defines the namespace where all the "bootstrap_admin" magic happens
   mattr_accessor :admin_namespace
