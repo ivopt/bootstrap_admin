@@ -134,8 +134,8 @@ module BootstrapAdminHelper
     defaults = {:controller => params[:controller]}.merge options
 
     ctrl_namespace = defaults[:controller].split("/").first
-    # Fix for engines with shared namespace for some reason main_app.url_for doesn't find the route without this "/" 
-    # It consider the route inside of engine instead of main app. 
+    # Fix for engines with shared namespace for some reason main_app.url_for doesn't find the route without this "/"
+    # It consider the route inside of engine instead of main app.
     defaults[:controller] = "/#{defaults[:controller]}"
 
     if instance_eval "defined? #{ctrl_namespace}"
@@ -171,7 +171,7 @@ module BootstrapAdminHelper
   end
 
   # =====
-  def index_default_actions 
+  def index_default_actions
     if available_actions.include? :new
       model_klass = model_for controller
       link_to([:new, model_klass], bootstrap_url_for(:action => :new), :class => 'btn btn-primary').html_safe
@@ -250,6 +250,20 @@ module BootstrapAdminHelper
                                     model_klass.human_attribute_name(att),
                                     model_klass.type_of(att)
     end
+  end
+
+  # =============================================================================
+  # Tries to render the action/partial "namespaced" with the current action name
+  # if it fails, then simply calls render with whatever args that got passed in.
+  #
+  # Ex:
+  #  # on get to '/admin/some_resource/new'
+  #  render_with_fallback 'form' # this will to render 'new_form', if it fails,
+  #                              # then it will just call "render 'form'"
+  def render_with_fallback *args
+    render "#{params[:action]}_#{args.first}", *args[1..-1]
+  rescue ActionView::MissingTemplate
+    render *args
   end
 
   # =============================================================================

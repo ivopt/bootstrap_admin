@@ -2,7 +2,7 @@
 = simple_form_for *bootstrap_form_url(model_instance) do |f|
   = f.error_notification
 
-  = render "form_fields", :form => f
+  = render_with_fallback "form_fields", :form => f
 
   .actions
     = yield :actions
