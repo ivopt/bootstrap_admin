@@ -6,7 +6,7 @@ module BootstrapAdmin::MenuHelper
   # Builds the bootstrap_admin menu markup
   # @return [Markup] bootstrap_admin menu
   def bootstrap_admin_menu
-    content_tag :ul, :class=>"nav" do
+    content_tag :ul, :class=>"nav navbar-nav" do
       bootstrap_admin_menu_items.map do |row|
         if row[:item].is_a? Array
           bootstrap_admin_menu_dropdown row
