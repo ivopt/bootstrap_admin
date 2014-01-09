@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'bootstrap_admin/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "bootstrap_admin"
+  gem.name          = "bootstrap3_admin"
   gem.version       = BootstrapAdmin::VERSION
   gem.authors       = ["Ivo Jesus", "Bruno Coelho"]
   gem.email         = ["ivo.jesus@gmail.com", "brunoflcoelho@gmail.com"]
