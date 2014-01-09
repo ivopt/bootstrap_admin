@@ -1,7 +1,14 @@
-= form_tag bootstrap_url, :method => :get, :class=>"search bootstrap_admin" do
-  .input-append{:class => params[:q].blank? ? "" : "input-prepend"}
-    - unless params[:q].blank?
-      .add-on.prepend.btn.reset= image_tag "cross.gif"
-    = text_field_tag "q", params[:q], :placeholder => I18n.t("placeholder.search")
-    .add-on.append.btn.search= image_tag "search_btn.png"
-.clear
+.row
+  .pull-right
+    = form_tag bootstrap_url, :method => :get, :class=>"search bootstrap_admin" do
+      .input-group
+        - unless params[:q].blank?
+          %span.input-group-btn
+            %button.btn.btn-default.append.reset{:type=>"button"}
+              %span{:class=>"glyphicon glyphicon-remove"}
+        = text_field_tag "q", params[:q], :placeholder => I18n.t("placeholder.search"), :class=>"form-control"
+        %span.input-group-btn    
+          %button.btn.btn-default.append.search{:type=>"button"}
+            %span{:class=>"glyphicon glyphicon-search", :style=>"padding-top:3px;color:#2D6CA2;"}
+
+  .clear

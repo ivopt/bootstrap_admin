@@ -6,4 +6,6 @@
 
   .actions
     = yield :actions
-    = link_to :back, bootstrap_url, :class => 'btn'
+    = link_to bootstrap_url, :class => BootstrapAdmin::default_actions_params[:back][:button_class] do
+      = content_tag(:span, '',:class => BootstrapAdmin::default_actions_params[:back][:glyphicon_class]) if BootstrapAdmin::use_glyphicons? 
+      = content_tag(:span, t(:back))
