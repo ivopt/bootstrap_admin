@@ -150,78 +150,72 @@ module BootstrapAdminHelper
     item_name = item.class.name.underscore.gsub("/","_")
     [item, :as => item_name, :url => bootstrap_url_for(:action => (item.new_record? ? :create : :update), :id => item.id)]
   end
-
-  # =============================================================================
-  # def index_actions_for item
-  #   actions = []
-
-  #   if available_actions.include? :show
-  #     actions << link_to( bootstrap_url_for(:action => :show, :id => item.id), class: 'btn btn-default', :alt=> t(:show), :title=>t(:show)) do
-  #       content_tag(:span, '',:class=>"glyphicon glyphicon-eye-open")
-  #     end
-  #   end
-
-  #   if available_actions.include? :edit
-  #     actions << link_to( bootstrap_url_for(:action => :edit, :id => item.id), class: 'btn btn-default', :alt=> t(:edit), :title=>t(:edit)) do 
-  #       content_tag(:span, '',:class=>"glyphicon glyphicon-edit")
-  #     end
-
-  #   end
-
-  #   if available_actions.include? :destroy
-  #     actions << link_to( bootstrap_url_for(:action => :show, :id => item.id), confirm: t(:confirm), method: :delete, class: 'btn btn-danger', :alt=> t(:destroy), :title=>t(:destroy)) do
-  #       content_tag(:span, '',:class=>"glyphicon glyphicon-trash")
-  #     end
-  #   end
-    
-  # end
   
-  def show_link_action item
-    if available_actions.include? :show
-      link_to( bootstrap_url_for(:action => :show, :id => item.id), class: 'btn btn-default', :alt=> t(:show), :title=>t(:show)) do
-        content_tag(:span, '',:class=>"glyphicon glyphicon-eye-open")
+  def action_link item, action, options = {}
+    if available_actions.include? action.to_sym
+      opts = {
+        :class => BootstrapAdmin::default_actions_params[action.to_sym][:button_class],
+        :alt => I18n.t(action.to_sym),
+        :title => I18n.t(action.to_sym)
+      }.merge(Hash options)
+
+      link_to( bootstrap_url_for(:action => action.to_sym, :id => item.id), opts) do
+        if BootstrapAdmin::use_glyphicons?
+          content_tag(:span, '',:class=>BootstrapAdmin::default_actions_params[action.to_sym][:glyphicon_class])
+        else
+          t(action.to_sym)
+        end
       end
     end
-  end
 
-  def edit_link_action item
-    if available_actions.include? :edit
-      link_to( bootstrap_url_for(:action => :edit, :id => item.id), class: 'btn btn-default', :alt=> t(:edit), :title=>t(:edit)) do 
-        content_tag(:span, '',:class=>"glyphicon glyphicon-edit")
-      end
-    end
   end
   
-  def delete_link_action item
-    if available_actions.include? :destroy
-      link_to( bootstrap_url_for(:action => :show, :id => item.id), confirm: t(:confirm), method: :delete, class: 'btn btn-danger', :alt=> t(:destroy), :title=>t(:destroy)) do
-        content_tag(:span, '',:class=>"glyphicon glyphicon-trash")
-      end
-    end
-  end
-  
-  def index_actions_for item, actions=[:show, :edit, :delete]
+  def index_actions_for item, actions=[:show, :edit, :destroy]
     html = []
     actions.each do |action|
-      html << self.send("#{action}_link_action", item)
+      html << self.action_link(item, action, BootstrapAdmin::default_actions_params[action.to_sym][:link_options])
     end
     html.join("\n").html_safe
   end
 
   # =====
-  def index_default_actions 
-    if available_actions.include? :new
+  def index_default_actions actions=[:new]
+    if (available_actions.include? :new) && (actions.include?(:new))
       model_klass = model_for controller
-      link_to([:new, model_klass], bootstrap_url_for(:action => :new), :class => 'btn btn-primary').html_safe
+      link_to(bootstrap_url_for(:action => :new), :class => BootstrapAdmin::default_actions_params[:new][:button_class]) do 
+        if BootstrapAdmin::use_glyphicons?
+           content_tag(:span, '',:class=>BootstrapAdmin::default_actions_params[:new][:glyphicon_class]) +
+           content_tag(:span, t(:new, :elem=>model_klass.model_name.human))
+        else
+          content_tag(:span, t(:new, :elem=>model_klass.model_name.human))
+        end
+      end.html_safe
     end
   end
 
-  def show_default_actions
+  def show_default_actions actions=[:edit]
     model_instance = model_instance_for controller
-    str = if available_actions.include? :edit
-      link_to :edit, bootstrap_url_for(:action => :edit, :id => model_instance.id), :class => 'btn'
+    str = if available_actions.include? :edit and actions.include? :edit
+      link_to( bootstrap_url_for(:action => :edit, :id => model_instance.id), 
+            :class => BootstrapAdmin::default_actions_params[:edit][:button_class], :alt=> t(:edit), :title=>t(:edit)) do 
+        if BootstrapAdmin::use_glyphicons?
+          content_tag(:span, '',:class => BootstrapAdmin::default_actions_params[:edit][:glyphicon_class]) + 
+          content_tag(:span, t(:edit, :elem=>model_instance.class.model_name.human))
+        else
+          t(:edit)
+        end
+      end
     end || ""
-    str += link_to :back, bootstrap_url, :class => 'btn'
+    str += 
+
+    link_to bootstrap_url, :class => BootstrapAdmin::default_actions_params[:back][:button_class] do 
+      if BootstrapAdmin::use_glyphicons? 
+        content_tag(:span, '',:class => BootstrapAdmin::default_actions_params[:back][:glyphicon_class]) +
+        content_tag(:span, t(:back))
+      else
+        content_tag(:span, t(:back))
+      end
+    end
     str.html_safe
   end
 
