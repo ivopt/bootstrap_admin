@@ -1,8 +1,8 @@
 .navbar.navbar-fixed-top
   .navbar-inner
-    .container
-      %a.brand(href="/admin")= t "app_name"
-      .container.nav-collapse
-        = bootstrap_admin_menu
-        = render 'admin/shared/login_area'
+    .container.nav-collapse
+      .pull-left
+        = render 'admin/shared/app_name'
+      = bootstrap_admin_menu
+      = render 'admin/shared/login_area'
 .nav_fillup

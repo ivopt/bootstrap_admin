@@ -2,7 +2,7 @@
 
 .nav_fillup{
   clear:both;
-  margin-top:40px;
+  margin-top:70px;
 }
 .container.content{
 }
@@ -66,6 +66,36 @@ input[type="color"],
 .table td.actions{
   text-align: right;
 }
+
+table.index td:last-child{
+  text-align:right;
+  min-width:210px;
+} 
+table.index th:last-child {text-align:center;}
+table th{
+    background-color: #F4F4F4;
+    padding:10px;
+
+}
+table th:first-child{
+    border-top-left-radius: 5px;
+
+}
+table th:last-child{
+    border-top-right-radius:5px;
+
+}
+.table > tbody > tr > td, .table > tfoot > tr > td {
+  vertical-align: middle;
+}
+.table.index{
+  margin-top: 20px;
+}
+.zebra-striped tbody tr:nth-child(even) td{background-color:#f9f9f9;}
+.zebra-striped tbody tr:nth-child(odd) td{background-color:#FFF;}
+.zebra-striped tbody tr{border:0px;}
+.zebra-striped>tbody>tr>td{border:0px;}
+.zebra-striped>thead>tr>th{border:0px;}
 .btn { font-size: 13px; }
 .btn-group > .btn,
 .btn-group > .dropdown-menu {
@@ -119,6 +149,7 @@ input[type="color"],
   // @include background-gradient(#242424, #050505);
   @include background-gradient(#333, #222);
 }
+
 .navbar{
   .brand {
     color: white;
@@ -129,11 +160,12 @@ input[type="color"],
   }
   .nav > li > a{
     &:focus, &:hover{
-      color:white;
+      color:black;
       text-shadow: 0 0 1px silver;
     }
   }
 }
+
 // -----------------------------------------------------------------------------
 form div.error{
   // background:#fae5e3;
@@ -170,5 +202,27 @@ form div.error{
   }
 }
 
+.app_name{
+  font-size: 26px;
+  line-height: 48px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
 
+#flash-area{
+  text-align: center;
+  width: 1170px;
+  margin: auto;
+}
 
+.glyphicon.glyphicon-remove{
+  padding-top:3px; 
+  color: #C12E2A;
+}
+.search.bootstrap_admin{
+  width: 300px; 
+  margin-right: 15px;
+}
+div.actions :not(:first-child){
+  margin-left: 5px;
+}

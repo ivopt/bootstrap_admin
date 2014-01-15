@@ -55,6 +55,47 @@ module BootstrapAdmin
     index: %w(table-bordered table-striped)
   }
   # =============================================================================
+  # Use Glyphicons in buttons, default = true
+  mattr_writer :use_glyphicons
+  @@use_glyphicons = true
+  def self.use_glyphicons?; @@use_glyphicons; end
+  #Customize buttons classes or glyphicons for action links
+  mattr_accessor :default_actions_params
+  @@default_actions_params = {
+    
+    :new => {
+              :button_class => 'btn btn-primary', 
+              :glyphicon_class => 'glyphicon glyphicon-file'
+    },
+    :create => { :button_class => 'btn btn-primary', 
+                 :glyphicon_class => 'glyphicon glyphicon-file'
+    },
+    :show => {
+              :button_class => 'btn btn-default', 
+              :glyphicon_class => 'glyphicon glyphicon-eye-open'
+    },
+    :edit => {
+              :button_class => 'btn btn-default', 
+              :glyphicon_class => 'glyphicon glyphicon-edit'
+    }, 
+    :destroy => {
+               :link_options => { :confirm => I18n.t(:confirm), 
+                                  :method => :delete
+                },
+                :button_class => 'btn btn-danger', 
+                :glyphicon_class => 'glyphicon glyphicon-trash'
+    },
+    :back => {
+              :button_class => 'btn btn-default back', 
+              :glyphicon_class => 'glyphicon glyphicon-arrow-left'
+    },
+    :form => {
+              :button_class => 'btn btn-primary'
+    }
+  }
+   
+   
+  # =============================================================================
   # Setup BootstrapAdmin
   # Run rails generate bootstrap_admin:install
   # to create a fresh initializer with all configuration values.

@@ -2,4 +2,4 @@
   = render_form_field form, attribute
 
 - content_for :actions do
-  = form.button :submit, :class => 'btn btn-primary'
+  = form.button :submit, :class => BootstrapAdmin::default_actions_params[:form][:button_class]

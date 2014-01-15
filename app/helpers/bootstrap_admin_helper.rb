@@ -150,40 +150,72 @@ module BootstrapAdminHelper
     item_name = item.class.name.underscore.gsub("/","_")
     [item, :as => item_name, :url => bootstrap_url_for(:action => (item.new_record? ? :create : :update), :id => item.id)]
   end
+  
+  def action_link item, action, options = {}
+    if available_actions.include? action.to_sym
+      opts = {
+        :class => BootstrapAdmin::default_actions_params[action.to_sym][:button_class],
+        :alt => I18n.t(action.to_sym),
+        :title => I18n.t(action.to_sym)
+      }.merge(Hash options)
 
-  # =============================================================================
-  def index_actions_for item
-    actions = []
-
-    if available_actions.include? :show
-      actions << link_to(:show, bootstrap_url_for(:action => :show, :id => item.id), class: 'btn')
+      link_to( bootstrap_url_for(:action => action.to_sym, :id => item.id), opts) do
+        if BootstrapAdmin::use_glyphicons?
+          content_tag(:span, '',:class=>BootstrapAdmin::default_actions_params[action.to_sym][:glyphicon_class])
+        else
+          t(action.to_sym)
+        end
+      end
     end
 
-    if available_actions.include? :edit
-      actions << link_to(:edit, bootstrap_url_for(:action => :edit, :id => item.id), class: 'btn')
+  end
+  
+  def index_actions_for item, actions=[:show, :edit, :destroy]
+    html = []
+    actions.each do |action|
+      html << self.action_link(item, action, BootstrapAdmin::default_actions_params[action.to_sym][:link_options])
     end
-
-    if available_actions.include? :destroy
-      actions << link_to(:destroy, bootstrap_url_for(:action => :show, :id => item.id), confirm: t(:confirm), method: :delete, class: 'btn btn-danger')
-    end
-
-    actions.join("\n").html_safe
+    html.join("\n").html_safe
   end
 
   # =====
-  def index_default_actions
-    if available_actions.include? :new
+  def index_default_actions actions=[:new]
+    if (available_actions.include? :new) && (actions.include?(:new))
       model_klass = model_for controller
-      link_to([:new, model_klass], bootstrap_url_for(:action => :new), :class => 'btn btn-primary').html_safe
+      link_to(bootstrap_url_for(:action => :new), :class => BootstrapAdmin::default_actions_params[:new][:button_class]) do 
+        if BootstrapAdmin::use_glyphicons?
+           content_tag(:span, '',:class=>BootstrapAdmin::default_actions_params[:new][:glyphicon_class]) +
+           content_tag(:span, t(:new, :elem=>model_klass.model_name.human))
+        else
+          content_tag(:span, t(:new, :elem=>model_klass.model_name.human))
+        end
+      end.html_safe
     end
   end
 
-  def show_default_actions
+  def show_default_actions actions=[:edit]
     model_instance = model_instance_for controller
-    str = if available_actions.include? :edit
-      link_to :edit, bootstrap_url_for(:action => :edit, :id => model_instance.id), :class => 'btn'
+    str = if available_actions.include? :edit and actions.include? :edit
+      link_to( bootstrap_url_for(:action => :edit, :id => model_instance.id), 
+            :class => BootstrapAdmin::default_actions_params[:edit][:button_class], :alt=> t(:edit), :title=>t(:edit)) do 
+        if BootstrapAdmin::use_glyphicons?
+          content_tag(:span, '',:class => BootstrapAdmin::default_actions_params[:edit][:glyphicon_class]) + 
+          content_tag(:span, t(:edit, :elem=>model_instance.class.model_name.human))
+        else
+          t(:edit)
+        end
+      end
     end || ""
-    str += link_to :back, bootstrap_url, :class => 'btn'
+    str += 
+
+    link_to bootstrap_url, :class => BootstrapAdmin::default_actions_params[:back][:button_class] do 
+      if BootstrapAdmin::use_glyphicons? 
+        content_tag(:span, '',:class => BootstrapAdmin::default_actions_params[:back][:glyphicon_class]) +
+        content_tag(:span, t(:back))
+      else
+        content_tag(:span, t(:back))
+      end
+    end
     str.html_safe
   end
 
