@@ -243,7 +243,11 @@ module BootstrapAdminHelper
               bootstrap_admin_config.send("action_fields")              ||
               model_klass.accessible_attributes.
                 reject(&:blank?).
-                map{|att| real_attribute_name att }
+                map{|att| real_attribute_name att }.
+                reject do |att| 
+                  att.to_s =~ /(.+)_attributes/ && 
+                  model_klass.reflect_on_all_associations.map(&:name).include?($1.to_sym)
+                end
 
     @attributes = fields.map do |att|
       BootstrapAdmin::Attribute.new att,
