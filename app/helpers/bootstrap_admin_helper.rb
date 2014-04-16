@@ -157,7 +157,7 @@ module BootstrapAdminHelper
         :class => BootstrapAdmin::default_actions_params[action.to_sym][:button_class],
         :alt => I18n.t(action.to_sym),
         :title => I18n.t(action.to_sym)
-      }.merge(Hash options)
+      }.merge(Hash.new options)
 
       link_to( bootstrap_url_for(:action => action.to_sym, :id => item.id), opts) do
         if BootstrapAdmin::use_glyphicons?
