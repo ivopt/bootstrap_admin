@@ -1,4 +1,5 @@
 # -----------------------------------------------------------------------------
+require 'responders'
 require 'rails'
 require 'haml'
 require 'simple_form'
