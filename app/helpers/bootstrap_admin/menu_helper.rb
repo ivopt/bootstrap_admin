@@ -32,7 +32,7 @@ module BootstrapAdmin::MenuHelper
       "- :item: #{ename}"
     end.join("\n")
 
-    @bootstrap_admin_menu_items = YAML.load(yml_menu)
+    @bootstrap_admin_menu_items = YAML.load(yml_menu) || []
   end
 
   # =============================================================================

@@ -29,6 +29,6 @@ SimpleForm.setup do |config|
     wrapper.use :label
   end
 
-  SimpleForm.form_class = "form-stacked"
+  SimpleForm.default_form_class = "form-stacked"
   SimpleForm.browser_validations = false
 end

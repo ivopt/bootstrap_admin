@@ -22,4 +22,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency %q<haml>
   gem.add_runtime_dependency %q<coffee-rails>
   gem.add_runtime_dependency %q<jquery-rails>
+  gem.add_runtime_dependency %q<responders>
 end

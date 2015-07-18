@@ -17,6 +17,11 @@ module BootstrapAdmin
         copy_file "en_bootstrap_admin.yml", "config/locales/en_bootstrap_admin.yml"
       end
 
+      def append_to_assets
+        append_file "config/initializers/assets.rb",
+                    "Rails.application.config.assets.precompile += %w( admin.css admin.js )"
+      end
+
       def asset_configuration
         empty_directory "app/assets/javascripts/#{namespace_parsed}"
         create_file "app/assets/javascripts/#{namespace_parsed}.js" do
