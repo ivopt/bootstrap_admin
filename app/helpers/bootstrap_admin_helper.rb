@@ -216,7 +216,7 @@ module BootstrapAdminHelper
   # =============================================================================
   # @return [String] the model instance name for the current controller
   def model_name_for controller
-    model_for(controller).model_name.underscore
+    model_for(controller).model_name.to_s.underscore
   end
 
   # =============================================================================
@@ -238,16 +238,9 @@ module BootstrapAdminHelper
   def attributes
     return @attributes if @attributes
     model_klass = model_for controller
-
     fields =  bootstrap_admin_config.send("#{params[:action]}_fields")  ||
               bootstrap_admin_config.send("action_fields")              ||
-              model_klass.accessible_attributes.
-                reject(&:blank?).
-                map{|att| real_attribute_name att }.
-                reject do |att| 
-                  att.to_s =~ /(.+)_attributes/ && 
-                  model_klass.reflect_on_all_associations.map(&:name).include?($1.to_sym)
-                end
+              find_attributes_for_class(model_klass)
 
     @attributes = fields.map do |att|
       BootstrapAdmin::Attribute.new att,
@@ -292,6 +285,22 @@ module BootstrapAdminHelper
       else
         attribute.to_sym
       end
+    end
+
+    # ==============================================================================
+    # Finds attributes for the given model class
+    # @param model_klass [ActiveRecord::Base] The model to get attributes from
+    # @return [Array of Symbol] attributes for the given model
+    def find_attributes_for_class model_klass
+      attributes = model_klass.attribute_names.map(&:to_sym) - BootstrapAdmin.default_ignored_field_symbols
+
+      attributes.map{|att| real_attribute_name att }.
+                 reject{|att|
+                   att.to_s =~ /(.+)_attributes/ &&
+                   model_klass.reflect_on_all_associations
+                              .map(&:name)
+                              .include?($1.to_sym)
+                 }
     end
 
 end
