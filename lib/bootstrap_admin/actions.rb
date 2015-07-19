@@ -98,7 +98,7 @@ module BootstrapAdmin
             instance_variable_set "@#{collection_name}", collection_var
           else
             unless cvar = instance_variable_get("@#{collection_name}")
-              cvar = model_class.scoped
+              cvar = model_class.default_scoped
               instance_variable_set "@#{collection_name}", cvar
             end
             cvar
