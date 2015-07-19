@@ -64,6 +64,10 @@ module BootstrapAdmin
     @@default_ignored_fields.map(&:to_sym)
   end
 
+  def self.filter_ignored_fields fields
+    Array(fields).map(&:to_sym) - default_ignored_field_symbols
+  end
+
   # =============================================================================
   # Setup BootstrapAdmin
   # Run rails generate bootstrap_admin:install

@@ -96,10 +96,11 @@ module BootstrapAdmin
       # =============================================================================
       def search_fields resource
         if controller.searchable_fields.blank?
-          text_fields = resource.columns.
-                                 select{|c| [:string, :text].include? c.type}.
-                                 map{|c| c.name.to_sym}
-          text_fields - BootstrapAdmin.default_ignored_field_symbols
+          BootstrapAdmin.filter_ignored_fields(
+            resource.columns.
+                     select{|c| [:string, :text].include? c.type}.
+                     map{|c| c.name.to_sym}
+          )
         else
           controller.searchable_fields
         end

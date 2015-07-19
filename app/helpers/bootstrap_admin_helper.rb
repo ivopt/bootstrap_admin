@@ -292,7 +292,7 @@ module BootstrapAdminHelper
     # @param model_klass [ActiveRecord::Base] The model to get attributes from
     # @return [Array of Symbol] attributes for the given model
     def find_attributes_for_class model_klass
-      attributes = model_klass.attribute_names.map(&:to_sym) - BootstrapAdmin.default_ignored_field_symbols
+      attributes = BootstrapAdmin.filter_ignored_fields(model_klass.attribute_names)
 
       attributes.map{|att| real_attribute_name att }.
                  reject{|att|
