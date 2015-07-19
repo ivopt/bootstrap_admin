@@ -28,7 +28,7 @@ module BootstrapAdmin
       # =============================================================================
       # Creates a new item
       def create
-        instance model_class.new(params[model_name])
+        instance model_class.new( find_permitted_fields(:new) )
         instance.save
         namespaced_response instance
       end
@@ -40,7 +40,7 @@ module BootstrapAdmin
       # =============================================================================
       # Updates the existing item
       def update
-        instance.update_attributes params[model_name]
+        instance.update_attributes find_permitted_fields(:update)
         namespaced_response instance
       end
 
@@ -109,6 +109,18 @@ module BootstrapAdmin
         # @return [String] collection name based on the controller name
         def collection_name
           self.class.name.sub("Controller", "").underscore.split('/').last
+        end
+
+        # ==============================================================================
+        # Strong Parameters stuff...
+        def find_permitted_fields action_name
+          fields = (
+            send("permitted_#{action_name}_fields") ||
+            send("permitted_fields") ||
+            BootstrapAdmin.filter_ignored_fields( model_class.attribute_names )
+          ).map(&:to_sym)
+
+          params.require(model_name).permit(*fields)
         end
 
       private

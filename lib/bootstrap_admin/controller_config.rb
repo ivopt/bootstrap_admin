@@ -24,6 +24,11 @@ module BootstrapAdmin
     alias_method :create_fields, :form_fields
     alias_method :update_fields, :form_fields
 
+    attr_accessor :permitted_new_fields
+    attr_accessor :permitted_update_fields
+    attr_accessor :permitted_search_fields
+    attr_accessor :permitted_fields
+
     # Fields to be used on ALL actions
     # These are used when none of the {action}_fields are defined
     attr_accessor :action_fields
