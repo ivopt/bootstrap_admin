@@ -55,6 +55,15 @@ module BootstrapAdmin
   @@ui_styles = {
     index: %w(table-bordered table-striped)
   }
+
+  # =============================================================================
+  mattr_accessor :default_ignored_fields
+  @@default_ignored_fields = %i(id created_at updated_at)
+
+  def self.default_ignored_field_symbols
+    @@default_ignored_fields.map(&:to_sym)
+  end
+
   # =============================================================================
   # Setup BootstrapAdmin
   # Run rails generate bootstrap_admin:install
