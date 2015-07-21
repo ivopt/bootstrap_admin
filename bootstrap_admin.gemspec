@@ -11,16 +11,19 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Create beatifull admin sections}
   gem.summary       = %q{Small lib to create standard admin sections.}
   gem.homepage      = "https://github.com/LynxEyes/bootstrap_admin"
+  gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($/)
   # gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_runtime_dependency %q<rails>, ">= 3.1.0"
+  gem.add_runtime_dependency %q<rails>, ">= 4.0.0"
   gem.add_runtime_dependency %q<simple_form>, ">= 2.0.0"
   gem.add_runtime_dependency %q<haml>
   gem.add_runtime_dependency %q<coffee-rails>
   gem.add_runtime_dependency %q<jquery-rails>
   gem.add_runtime_dependency %q<responders>
+
+  gem.add_development_dependency "sqlite3"
 end
