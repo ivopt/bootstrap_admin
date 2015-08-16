@@ -13,7 +13,7 @@ module ActionDispatch::Routing
       BootstrapAdmin.admin_namespace = admin_namespace
 
       root_options = BootstrapAdmin.admin_root_options.
-                      merge({:to => admin_namespace.to_s}).
+                      merge({:controller => admin_namespace.to_s}).
                       merge(options)
       resource admin_namespace, root_options
 
