@@ -61,13 +61,14 @@ module BootstrapAdmin
 
       # =============================================================================
       def resource_count resource
-        values = resource.includes_values
-        to_remove = resource.reflect_on_all_associations.select{|a| a.options[:polymorphic]}.map &:name
-        resource.includes_values -= to_remove
-        count = resource.count
-        resource.includes_values = values
+        dupped_resource = resource.dup
 
-        return count
+        to_remove = dupped_resource.reflect_on_all_associations
+                                   .select{|a| a.options[:polymorphic]}
+                                   .map &:name
+        dupped_resource.includes_values -= to_remove
+
+        return dupped_resource.count
       end
 
       # =============================================================================
